@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-30">
-                    <a class="d-block" href="{{ route('user.deposit') }}" title="@lang('Deposit Now')">
+                    <a class="d-block" href="javascript:void(0);" title="@lang('Deposit Now')">
                         <div class="custom-box-shadow rounded mb-4">
                             <div class="d-flex">
                                 <div class="bg-dashborad-card display-3 text-white d-flex align-items-center justify-content-center rounded">
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-30">
-                    <a class="d-block" href="{{ route('user.deposit.history') }}">
+                    <a class="d-block" href="javascript:void(0);">
                         <div class="custom-box-shadow rounded mb-4">
                             <div class="d-flex">
                                 <div class="bg-dashborad-card display-3 text-white d-flex align-items-center justify-content-center rounded">
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-30">
-                    <a class="d-block" href="{{ route('user.bids.list') }}">
+                    <a class="d-block" href="javascript:void(0);">
                         <div class="custom-box-shadow rounded mb-4">
                             <div class="d-flex">
                                 <div class="bg-dashborad-card display-3 text-white d-flex align-items-center justify-content-center rounded">
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-30">
-                    <a class="d-block" href="{{ route('user.bids.list') }}">
+                    <a class="d-block" href="javascript:void(0);">
                         <div class="custom-box-shadow rounded mb-4">
                             <div class="d-flex">
                                 <div class="bg-dashborad-card display-3 text-white d-flex align-items-center justify-content-center rounded">
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-30">
-                    <a class="d-block" href="{{ route('user.winning.products') }}">
+                    <a class="d-block" href="javascript:void(0);">
                         <div class="custom-box-shadow rounded mb-4">
                             <div class="d-flex">
                                 <div class="bg-dashborad-card display-3 text-white d-flex align-items-center justify-content-center rounded">
@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-30">
-                    <a class="d-block" href="{{ route('user.transactions.history') }}">
+                    <a class="d-block" href="javascript:void(0);">
                         <div class="custom-box-shadow rounded mb-4">
                             <div class="d-flex">
                                 <div class="bg-dashborad-card display-3 text-white d-flex align-items-center justify-content-center rounded">

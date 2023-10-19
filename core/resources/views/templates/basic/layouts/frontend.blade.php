@@ -134,14 +134,14 @@
                             <div class="mainmenu-area">
                                 <nav class="menu">
                                     <ul id="nav">
-                                        <li><a href="{{ route('home') }}">@lang('Home')</a></li>
+                                        <li><a href="javascript:void(0)">@lang('Home')</a></li>
 
                                         @foreach($pages as $k => $data)
-                                            <li><a href="{{route('pages',[$data->slug])}}">{{trans($data->name)}}</a>
+                                            <li><a href="javascript:void(0)">{{trans($data->name)}}</a>
                                             </li>
                                         @endforeach
 
-                                        <li><a href="{{ route('liveAuction') }}">@lang('Live Auction')</a></li>
+                                        <li><a href="javascript:void(0)">@lang('Live Auction')</a></li>
                                         {{-- <li><a href="{{ route('blog') }}">@lang('Blog')</a></li> --}}
                                         {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
 
@@ -169,9 +169,9 @@
                                             <i class="fas fa-search"></i>
                                         </div>
                                         <div class="search-form">
-                                            <form action="{{ route('product.search') }}" method="get">
+                                            <form action="javascript:void(0)" method="get">
                                                 <input type="search" placeholder="@lang('Search by product name')" name="product" required>
-                                                <button type="submit"><i class="fas fa-search"></i></button>
+                                                <button type="submit" disable><i class="fas fa-search"></i></button>
                                             </form>
                                         </div>
                                     </div><!--~./ search-wrap ~-->
@@ -245,7 +245,7 @@
                             <div class="widget-content">
                                 <ul>
                                     @foreach($pages as $k => $data)
-                                        <li><a href="{{route('pages',[$data->slug])}}">
+                                        <li><a href="javascript:void(0)">
                                                 {{trans($data->name)}}
                                             </a>
                                         </li>
@@ -264,7 +264,7 @@
 
                                     @forelse($terms_privacy as $item)
                                         <li>
-                                            <a href="{{ route('extraPage.details', [$item->id, slug($item->data_values->title)]) }}">
+                                            <a href="javascript:void(0)">
                                                 @lang($item->data_values->title)
                                             </a>
                                         </li>

@@ -85,14 +85,15 @@
                     <div class="col-lg-5">
                         <div class="top-navbar-right">
                             <div class="header-social-area">
-                                <ul class="header-social-share">
+                                {{-- <ul class="header-social-share">
                                     @forelse($address_elements as $item)
                                         <li>
                                             <a href="{{ @$item->data_values->social_url }}">@php echo @$item->data_values->social_icon @endphp</a>
                                         </li>
                                     @empty
                                     @endforelse
-                                </ul><!--~./ social-share ~-->
+                                </ul> --}}
+                                <!--~./ social-share ~-->
                             </div>
                             <div class="user-registration-area">
                                 <a class="user-reg-btn" href="{{ route('user.profile-setting') }}">
@@ -126,15 +127,15 @@
                                         <li class="dropdown-trigger">
                                             <a href="javascript:void(0)">@lang('Deposit')</a>
                                             <ul class="dropdown-content">
-                                                <li><a href="{{ route('user.deposit') }}">@lang('Deposit Money')</a></li>
-                                                <li><a href="{{ route('user.deposit.history') }}">@lang('Deposit Log')</a></li>
+                                                <li><a href="javascript:void(0)">@lang('Deposit Money')</a></li>
+                                                <li><a href="javascript:void(0)">@lang('Deposit Log')</a></li>
                                             </ul>
                                         </li>
 
-                                        <li><a href="{{ route('user.winning.products') }}">@lang('Winning Products')</a></li>
-                                        <li><a href="{{ route('user.bids.list') }}">@lang('My Bids')</a></li>
-                                        <li><a href="{{ route('user.referrals') }}">@lang('Referrals')</a></li>
-                                        <li><a href="{{ route('user.transactions.history') }}">@lang('Transactions')</a></li>
+                                        <li><a href="javascript:void(0)">@lang('Winning Products')</a></li>
+                                        <li><a href="javascript:void(0)">@lang('My Bids')</a></li>
+                                        <li><a href="javascript:void(0)">@lang('Referrals')</a></li>
+                                        <li><a href="javascript:void(0)">@lang('Transactions')</a></li>
 
                                         {{-- <li class="dropdown-trigger">
                                             <a href="javascript:void(0)">@lang('Ticket')</a>
@@ -228,7 +229,7 @@
                             <div class="widget-content">
                                 <ul>
                                     @foreach($pages as $k => $data)
-                                        <li><a href="{{route('pages',[$data->slug])}}">
+                                        <li><a href="javascript:void(0)">
                                                 {{trans($data->name)}}
                                             </a>
                                         </li>
@@ -247,7 +248,7 @@
 
                                     @forelse($terms_privacy as $item)
                                         <li>
-                                            <a href="{{ route('extraPage.details', [$item->id, slug($item->data_values->title)]) }}">
+                                            <a href="javascript:void(0)">
                                                 @lang($item->data_values->title)
                                             </a>
                                         </li>

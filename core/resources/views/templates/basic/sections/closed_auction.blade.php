@@ -59,7 +59,7 @@
 
         </div><!-- /.row -->
         <div class="text-center">
-            <a href="{{ route('closedAuction') }}" class="btn btn-default">@lang('View more')</a>
+            <a href="javascript:void(0)" class="btn btn-default">@lang('View more')</a>
         </div>
     </div>
 </div><!-- /.closed-auction-block -->

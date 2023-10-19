@@ -22,8 +22,8 @@
                             <p>{{ __(@$hero_content->data_values->sub_heading) }}</p>
                         </div><!-- /.hero-desc -->
                         <div class="form-group-btn">
-                            <a class="btn btn-default" href="{{ @$hero_content->data_values->button_1_url }}">{{ __(@$hero_content->data_values->button_1) }}</a>
-                            <a class="btn btn-default btn-white" href="{{ @$hero_content->data_values->button_2_url }}">{{ __(@$hero_content->data_values->button_2) }}</a>
+                            <a class="btn btn-default" href="javascript:void(0)">{{ __(@$hero_content->data_values->button_1) }}</a>
+                            <a class="btn btn-default btn-white" href="javascript:void(0)">{{ __(@$hero_content->data_values->button_2) }}</a>
                         </div><!-- /.form-group-btn -->
                     </div><!-- /.hero-content-area -->
                 </div><!-- /.col-lg-8 -->
