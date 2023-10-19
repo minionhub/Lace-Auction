@@ -75,7 +75,7 @@
                                 </li>
                                 <li class="temperature"><span class="fa fa-phone"></span>@lang('Call Us')
                                     : {{ @$address_content->data_values->phone }} </li>
-                                <li>
+                                {{-- <li>
                                     <span class="fa fa-globe"></span>
                                     <select class="langSel bg-transparent text-muted" >
                                         <option value="">@lang('Select One')</option>
@@ -83,21 +83,22 @@
                                             <option value="{{$item->code}}" @if(session('lang') == $item->code) selected  @endif>{{ __($item->name) }}</option>
                                         @endforeach
                                     </select>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div><!--~./ top-navbar-left ~-->
                     </div>
                     <div class="col-lg-5">
                         <div class="top-navbar-right">
                             <div class="header-social-area">
-                                <ul class="header-social-share">
+                                {{-- <ul class="header-social-share">
                                     @forelse($address_elements as $item)
                                         <li>
                                             <a href="{{ @$item->data_values->social_url }}">@php echo @$item->data_values->social_icon @endphp</a>
                                         </li>
                                     @empty
                                     @endforelse
-                                </ul><!--~./ social-share ~-->
+                                </ul> --}}
+                                <!--~./ social-share ~-->
                             </div>
                             <div class="user-registration-area">
                                 @auth
@@ -141,8 +142,8 @@
                                         @endforeach
 
                                         <li><a href="{{ route('liveAuction') }}">@lang('Live Auction')</a></li>
-                                        <li><a href="{{ route('blog') }}">@lang('Blog')</a></li>
-                                        <li><a href="{{ route('contact') }}">@lang('Contact')</a></li>
+                                        {{-- <li><a href="{{ route('blog') }}">@lang('Blog')</a></li> --}}
+                                        {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
 
                                         <li class="dropdown-trigger">
                                             <a href="javascript:void(0)">@lang('Account')</a>
@@ -270,7 +271,7 @@
                                     @empty
                                     @endforelse
 
-                                    <li><a href="{{ route('contact') }}">@lang('Contact')</a></li>
+                                    {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
                                 </ul>
                             </div>
                         </aside>
@@ -324,14 +325,14 @@
                         {{ __(@$copyright_content->data_values->content) }}
                     </div>
                 </div>
-                <ul class="social-icons">
+                {{-- <ul class="social-icons">
                     @forelse($address_elements as $item)
                         <li>
                             <a href="{{ @$item->data_values->social_url }}">@php echo @$item->data_values->social_icon @endphp</a>
                         </li>
                     @empty
                     @endforelse
-                </ul>
+                </ul> --}}
             </div>
         </div>
     </footer>

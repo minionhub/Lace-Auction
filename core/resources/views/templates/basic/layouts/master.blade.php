@@ -70,7 +70,7 @@
                                 </li>
                                 <li class="temperature"><span class="fa fa-phone"></span>@lang('Call Us')
                                     : {{ @$address_content->data_values->phone }} </li>
-                                <li>
+                                {{-- <li>
                                     <span class="fa fa-globe"></span>
                                     <select class="langSel border-0 bg-transparent text-muted" >
                                         <option value="">@lang('Select One')</option>
@@ -78,7 +78,7 @@
                                             <option value="{{$item->code}}" @if(session('lang') == $item->code) selected  @endif>{{ __($item->name) }}</option>
                                         @endforeach
                                     </select>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div><!--~./ top-navbar-left ~-->
                     </div>
@@ -136,13 +136,13 @@
                                         <li><a href="{{ route('user.referrals') }}">@lang('Referrals')</a></li>
                                         <li><a href="{{ route('user.transactions.history') }}">@lang('Transactions')</a></li>
 
-                                        <li class="dropdown-trigger">
+                                        {{-- <li class="dropdown-trigger">
                                             <a href="javascript:void(0)">@lang('Ticket')</a>
                                             <ul class="dropdown-content">
                                                 <li><a href="{{ route('ticket.open') }}">@lang('Create New')</a></li>
                                                 <li><a href="{{ route('ticket') }}">@lang('My Ticket')</a></li>
                                             </ul>
-                                        </li>
+                                        </li> --}}
 
                                         <li class="dropdown-trigger">
                                             <a href="javascript:void(0)">@lang('Account')</a>
@@ -254,7 +254,7 @@
                                     @empty
                                     @endforelse
 
-                                    <li><a href="{{ route('contact') }}">@lang('Contact')</a></li>
+                                    {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
                                 </ul>
                             </div>
                         </aside>
@@ -308,14 +308,14 @@
                         {{ __(@$copyright_content->data_values->content) }}
                     </div>
                 </div>
-                <ul class="social-icons">
+                {{-- <ul class="social-icons">
                     @forelse($address_elements as $item)
                         <li>
                             <a href="{{ @$item->data_values->social_url }}">@php echo @$item->data_values->social_icon @endphp</a>
                         </li>
                     @empty
                     @endforelse
-                </ul>
+                </ul> --}}
             </div>
         </div>
     </footer>
