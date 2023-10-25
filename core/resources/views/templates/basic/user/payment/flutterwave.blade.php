@@ -1,7 +1,7 @@
 @extends($activeTemplate.'layouts.master')
 
 @section('content')
-    <div class="containerpd-t-80 pd-b-80">
+    <div class="container pd-t-80 pd-b-80">
         <div class="row justify-content-center">
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 text-center">
                 <div class="card custom-box-shadow bg-white-smoke p-2">

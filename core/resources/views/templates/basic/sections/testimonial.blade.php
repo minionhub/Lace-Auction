@@ -6,7 +6,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Testimonial Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="testimonial-block bg-white-smokepd-t-80 pd-b-80">
+<div class="testimonial-block bg-white-smoke pd-t-80 pd-b-80">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">

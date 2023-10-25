@@ -3,7 +3,7 @@
     @php
         $account_content = getContent('account_image.content', true);
     @endphp
-    <div class="user-signin-blockpd-t-80 pd-b-80">
+    <div class="user-signin-block pd-t-80 pd-b-80">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">

@@ -9,7 +9,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Auction Categories Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="auction-categories-blockpd-t-80 pd-b-80">
+<div class="auction-categories-block pd-t-80 pd-b-80">
     <div class="container ml-b-30">
         <div class="row justify-content-center">
             <div class="col-lg-9">

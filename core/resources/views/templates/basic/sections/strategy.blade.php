@@ -5,7 +5,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Fan Fact Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="fanfact-blockpd-t-80 pd-b-80">
+<div class="fanfact-block pd-t-80 pd-b-80">
     <div class="container ml-b-30">
         <div class="row justify-content-center">
             <div class="col-lg-10">

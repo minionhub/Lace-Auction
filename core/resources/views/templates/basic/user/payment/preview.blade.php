@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <div class="containerpd-t-80 pd-b-80">
+    <div class="container pd-t-80 pd-b-80">
         <div class="row  justify-content-center">
             <div class="col-md-8 custom-box-shadow bg-white-smoke p-4">
                 <div class="row">
