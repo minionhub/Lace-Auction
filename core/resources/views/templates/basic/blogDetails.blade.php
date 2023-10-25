@@ -4,7 +4,7 @@
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Blog Page Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    <div class="blog-page-blockpd-t-80 pd-b-80">
+    <div class="blog-page-block ptb-120">
         <div class="container">
             <!-- Content Row -->
             <div class="row justify-content-center">

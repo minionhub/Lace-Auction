@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row align-items-center justify-content-center hero-content-main">
                 <div class="col-lg-10">
-                    <div class="hero-content-area text-centerpd-t-80 pd-b-80">
+                    <div class="hero-content-area text-center ptb-120">
                         <div class="hero-title-area">
                             <h2 class="hero-title"><span class="text-typed" data-elements="{{ __(@$hero_content->data_values->heading) }}"></span></h2><!-- /.hero-title -->
                         </div><!-- /.hero-title-area -->
@@ -34,7 +34,7 @@
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Facility Area
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    <div class="facility-areapd-t-80 pd-b-80 pb-0">
+    <div class="facility-area ptb-120 pb-0">
         <div class="container ml-b-30">
             <div class="row facility-content">
 

@@ -4,7 +4,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Closed Auction Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="closed-auction-block bg-white-smokepd-t-80 pd-b-80">
+<div class="closed-auction-block bg-white-smoke ptb-120">
     <div class="container ml-b-30">
         <div class="row justify-content-center">
 

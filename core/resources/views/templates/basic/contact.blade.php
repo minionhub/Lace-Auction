@@ -4,7 +4,7 @@
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Contact Info Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    <div class="contact-info-blockpd-t-80 pd-b-80">
+    <div class="contact-info-block ptb-120">
         <div class="container ml-b-30">
             <div class="row">
                 <div class="col-lg-4 col-md-6">

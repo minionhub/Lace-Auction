@@ -5,7 +5,7 @@
                                                                             Start Product Details Block
                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-    <div class="product-details-blockpd-t-80 pd-b-80">
+    <div class="product-details-block ptb-120">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -151,7 +151,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="product-description pd-t-60">
+                    <div class="product-description pd-t-80 pd-t-80">
                         <div class="product-des-header">
                             <h2 class="section-heading">@lang('Product Overview')</h2>
                         </div>
