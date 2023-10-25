@@ -9,6 +9,8 @@ use App\Models\Transaction;
 use App\Models\Winner;
 use Illuminate\Http\Request;
 
+use App\Events\MyEvent;
+
 class BidController extends Controller
 {
     public function bid(Request $request, $product_id, $slug)
@@ -30,20 +32,20 @@ class BidController extends Controller
         }
 
         $_existing_user_bid = $product->userBidExist();
-        if ($_existing_user_bid){
-            $_old_bid_amount = $_existing_user_bid->bid_amount;
-            $_old_shipping_cost = $_existing_user_bid->shipping_cost;
-            $_old_amount = $_old_bid_amount + $_old_shipping_cost;
-            $total_payable = ($request->amount + $product->shipping_cost) - $_old_amount;
+        // if ($_existing_user_bid){
+        //     $_old_bid_amount = $_existing_user_bid->bid_amount;
+        //     $_old_shipping_cost = $_existing_user_bid->shipping_cost;
+        //     $_old_amount = $_old_bid_amount + $_old_shipping_cost;
+        //     $total_payable = ($request->amount + $product->shipping_cost) - $_old_amount;
 
-            //Exist bid object
-            $bid = $_existing_user_bid;
-        } else {
+        //     //Exist bid object
+        //     $bid = $_existing_user_bid;
+        // } else {
             $total_payable = $request->amount + $product->shipping_cost;
 
             //Creating bid object if not exist
             $bid = new Bid();
-        }
+        // }
 
         // Subtract User balance
         $user = auth()->user();
@@ -79,8 +81,16 @@ class BidController extends Controller
         $adminNotification->click_url = urlPath('admin.users.bids.list',$user->id);
         $adminNotification->save();
 
+        $data = [
+            'bidder' => $bid->user->firstname . ' '. $bid->user->lastname,
+            'amount' =>  $bid->bid_amount,
+        ];
+
+        event(new MyEvent($data));
+
         $notify[] = ['success', "Successfully bid on the product!"];
-        return back()->withNotify($notify);
+        return $notify;
+        // return back()->withNotify($notify);
     }
 
     //User bids list

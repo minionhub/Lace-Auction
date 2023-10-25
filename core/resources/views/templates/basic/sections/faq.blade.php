@@ -5,7 +5,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Faqs Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="faqs-block ptb-120">
+<div class="faqs-blockpd-t-80 pd-b-80">
     <div class="container">
         <div class="row flex-wrap-reverse">
             <div class="col-lg-6">

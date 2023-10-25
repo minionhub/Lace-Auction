@@ -204,7 +204,7 @@
             Start Footer Widget Area
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-    <footer class="site-footer pd-t-120">
+    <footer class="site-footer pd-t-60">
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Footer Widget Area
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->

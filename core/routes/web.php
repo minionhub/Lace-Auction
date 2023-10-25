@@ -366,8 +366,6 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('transactions', 'UserController@transactions')->name('transactions.history');
 
             Route::get('referrals','UserController@referrals')->name('referrals');
-
-
         });
     });
 });

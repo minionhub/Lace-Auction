@@ -7,7 +7,7 @@
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             User Sign up Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    <div class="user-signin-block ptb-120">
+    <div class="user-signin-blockpd-t-80 pd-b-80">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">

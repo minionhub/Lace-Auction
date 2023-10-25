@@ -1,7 +1,7 @@
 @extends($activeTemplate.'layouts.master')
 
 @section('content')
-    <div class=" ptb-120">
+    <div class="pd-t-80 pd-b-80">
         <div class="container ml-b-30">
 
             <div class="table-responsive custom-box-shadow">

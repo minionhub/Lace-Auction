@@ -1,7 +1,7 @@
 @extends($activeTemplate.'layouts.frontend')
 
 @section('content')
-    <div class="live-auction-block bg-white-smoke ptb-120">
+    <div class="live-auction-block bg-white-smokepd-t-80 pd-b-80">
         <div class="container ml-b-30">
 
             <div class="row items-two-1199 justify-content-center">

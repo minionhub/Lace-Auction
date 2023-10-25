@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @include('partials.seo')
 
 <!-- Custom Font
@@ -221,7 +222,7 @@
         $terms_privacy = getContent('extra.element');
         $blogs = getContent('blog.element', false, 3);
     @endphp
-    <footer class="site-footer pd-t-120">
+    <footer class="site-footer pd-t-60">
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Footer Widget Area
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->

@@ -1,19 +1,20 @@
-@extends($activeTemplate.'layouts.frontend')
+@extends($activeTemplate . 'layouts.frontend')
 
 @section('content')
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Start Product Details Block
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    <div class="product-details-block ptb-120">
+                                                                            Start Product Details Block
+                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+    <div class="product-details-blockpd-t-80 pd-b-80">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="product-main-thumb-area">
                         <div id="product-main-thumb" class="product-main-thumb">
                             @forelse($product->images as $image)
-                                @if($loop->first)
-                                    <img src="{{ getImage(imagePath()["products"]["path"] . "/" . $image) }}"
-                                         alt="big-1" class="w-100">
+                                @if ($loop->first)
+                                    <img src="{{ getImage(imagePath()['products']['path'] . '/' . $image) }}" alt="big-1"
+                                        class="w-100">
                                 @endif
                             @empty
                             @endforelse
@@ -22,7 +23,8 @@
                             <div class="owl-carousel single-product-slider carousel-nav-align-center">
                                 @forelse($product->images as $image)
                                     <div class="active-gallery">
-                                        <img src="{{ getImage(imagePath()["products"]["path"] . "/" . $image) }}" alt="thumbnail"/>
+                                        <img src="{{ getImage(imagePath()['products']['path'] . '/' . $image) }}"
+                                            alt="thumbnail" />
                                     </div>
                                 @empty
                                 @endforelse
@@ -36,15 +38,18 @@
                         <div class="item-bid-price-time">
                             <div class="bid-price">{{ $general->cur_sym }}{{ getAmount(@$product->min_bid_price) }}</div>
 
-                            @if(now()->between(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$product->start_date)->toDateTimeString(),\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$product->end_date)->toDateTimeString()))
+                            @if (now()->between(
+                                    \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $product->start_date)->toDateTimeString(),
+                                    \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $product->end_date)->toDateTimeString()))
                                 @auth
                                     <div class="bid-timer-area">
                                         <div id="bid_counter1" class="bid-timer">{{ $product->end_date }}</div>
                                         <p>@lang('Waiting For Bid')</p>
                                     </div>
                                     <div class="bid-button">
-                                        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#bidModal">
-                                            @if($product->userBidExist())
+                                        <button class="btn btn-default" type="button" data-toggle="modal"
+                                            data-target="#bidModal">
+                                            @if ($product->userBidExist())
                                                 @lang('Update Bid')
                                             @else
                                                 @lang('Bid Now')
@@ -71,8 +76,9 @@
                             @else
                                 <div class="bid-timer-area">
                                     <div class="bid-timer">{{ $product->winner->user->fullname }}</div>
-                                    @if($product->winner->bid->bid_amount)
-                                        <p>@lang('Bid Amount') {{ $general->cur_sym }} {{ getAmount($product->winner->bid->bid_amount) }}</p>
+                                    @if ($product->winner->bid->bid_amount)
+                                        <p>@lang('Bid Amount') {{ $general->cur_sym }}
+                                            {{ getAmount($product->winner->bid->bid_amount) }}</p>
                                     @endif
                                 </div>
                                 <div class="bid-button">
@@ -85,21 +91,26 @@
                             <div class="filter-info-tab">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li>
-                                        <a class="active" data-toggle="tab" href="#auction_info" role="tab">@lang('Auction Information')</a>
+                                        <a class="active" data-toggle="tab" href="#auction_info"
+                                            role="tab">@lang('Auction Information')</a>
                                     </li>
                                     <li>
-                                        <a data-toggle="tab" href="#auction_history" role="tab">@lang('Bidding History')</a>
+                                        <a data-toggle="tab" id="bid_history" href="#auction_history" role="tab">@lang('Bidding History')</a>
                                     </li>
                                 </ul>
                             </div><!--~./ end filter info tab ~-->
 
                             <div class="tab-content filter-info-tab-content">
                                 <!--~~~~~ Start Tab Pane ~~~~~-->
-                                <div class="tab-pane fade active show" id="auction_info" role="tabpanel" data-animate="hg-fadeInUp">
+                                <div class="tab-pane fade active show" id="auction_info" role="tabpanel"
+                                    data-animate="hg-fadeInUp">
                                     <ul class="item-info">
                                         <li>@lang('Category') : <span>{{ $product->category->name }}</span></li>
-                                        <li>@lang('Shipping Cost') : <span>{{ $general->cur_sym }}{{ getAmount(@$product->shipping_cost) }}</span></li>
-                                        <li>@lang('Start Date') : <span>{{ @showDateTime($product->start_date) }}</span></li>
+                                        <li>@lang('Shipping Cost') :
+                                            <span>{{ $general->cur_sym }}{{ getAmount(@$product->shipping_cost) }}</span>
+                                        </li>
+                                        <li>@lang('Start Date') : <span>{{ @showDateTime($product->start_date) }}</span>
+                                        </li>
                                         <li>@lang('End Date') : <span>{{ @showDateTime($product->end_date) }}</span></li>
                                         <li>@lang('Delivery Time') : <span>{{ $product->delivery_time }}</span></li>
                                     </ul>
@@ -107,25 +118,27 @@
 
                                 <!--~~~~~ Start Tab Pane ~~~~~-->
                                 <div class="tab-pane fade" id="auction_history" role="tabpanel">
-                                    <div class="table-responsive auction-history-table"  data-animate="hg-fadeInUp">
+                                    <div class="table-responsive auction-history-table" data-animate="hg-fadeInUp">
                                         <table class="table">
                                             <thead>
-                                            <tr>
-                                                <th class="history-price">@lang('Price')</th>
-                                                <th class="history-time">@lang('Bid Time')</th>
-                                                <th class="history-user">@lang('User')</th>
-                                            </tr>
+                                                <tr>
+                                                    <th class="history-price">@lang('Price')</th>
+                                                    <th class="history-time">@lang('Bid Time')</th>
+                                                    <th class="history-user">@lang('User')</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
 
-                                            @forelse($product->bids as $item)
-                                                <tr>
-                                                    <td class="history-price">{{ $general->cur_sym }}{{ getAmount($item->bid_amount) }}</td>
-                                                    <td class="history-time">{{ showDateTime($item->created_at) }}</td>
-                                                    <td class="history-user">{{ $item->user->fullname }}</td>
-                                                </tr>
-                                            @empty
-                                            @endforelse
+                                                @forelse($product->bids->reverse() as $item)
+                                                    <tr>
+                                                        <td class="history-price bid_amount">
+                                                            {{ $general->cur_sym }}{{ getAmount($item->bid_amount) }}</td>
+                                                        <td class="history-time bid_time">
+                                                            {{ showDateTime($item->created_at) }}</td>
+                                                        <td class="history-user bid_user">{{ $item->user->fullname }}</td>
+                                                    </tr>
+                                                @empty
+                                                @endforelse
 
                                             </tbody>
                                         </table>
@@ -138,33 +151,34 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="product-description pd-t-120">
+                    <div class="product-description pd-t-60">
                         <div class="product-des-header">
                             <h2 class="section-heading">@lang('Product Overview')</h2>
                         </div>
                         <div class="product-des-info">
                             <p>@php echo @$product->description @endphp</p>
-                            <div class="table-responsive product-info-table"  data-animate="hg-fadeInUp">
+                            <div class="table-responsive product-info-table" data-animate="hg-fadeInUp">
                                 <table class="table">
                                     <tbody>
 
-                                    @forelse($product->others_info as $key => $item)
-                                        <tr>
-                                            <td class="info-title">{{ __(@$key) }}</td>
-                                            <td class="info-dsc">{{ __(@$item) }}</td>
-                                        </tr>
-                                    @empty
-                                    @endforelse
+                                        @forelse($product->others_info as $key => $item)
+                                            <tr>
+                                                <td class="info-title">{{ __(@$key) }}</td>
+                                                <td class="info-dsc">{{ __(@$item) }}</td>
+                                            </tr>
+                                        @empty
+                                        @endforelse
 
                                     </tbody>
                                 </table>
                             </div><!-- /.auction-history-table -->
 
                             <p class="mt-3"><i class="fa fa-tags"></i> @lang('Tags'):
-                                @if($product->keywords)
-                                @foreach($product->keywords as $item)
-                                    <a href="{{ route('product.search', ['product' => $item]) }}"><span class="badge badge-dark">{{ $item }}</span></a>
-                                @endforeach
+                                @if ($product->keywords)
+                                    @foreach ($product->keywords as $item)
+                                        <a href="{{ route('product.search', ['product' => $item]) }}"><span
+                                                class="badge badge-dark">{{ $item }}</span></a>
+                                    @endforeach
                                 @endif
                             </p>
 
@@ -186,34 +200,38 @@
                     <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
 
-                <form action="{{ route('user.bid', [$product->id, slug($product->name)]) }}" method="post">
-                @csrf
+                <form id="bidForm" action="{{   }}"
+                    method="post">
+                    @csrf
 
-                <!-- Modal body -->
+                    <!-- Modal body -->
                     <div class="modal-body custom_border">
                         <div class="form-group">
-                            <label for="amount">@lang('Bid Amount')</label>
-                            <div class="input-group">
+                            <label for="amount">@l ang('Bid Amount')</label>
+                            <div class="input     -group">
                                 <input id="amount" type="text" class="form-control form-controller"
-                                       onkeyup="this.value = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount"
-                                       placeholder="0.00" required="" value="" autocomplete="off">
+                                    onkeyup="this.valuefdghf fg = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount"
+                                    placeholder="0.00" required="" value="" autocomplete="off">
                                 <div class="input-group-prepend">
-                                <span
-                                    class="input-group-text bg-white-smoke custom_border_span text-light">{{ $general->cur_text }}</span>
+                                    <span
+                                        class="input-group-text bg-white-smoke custom_border_span text-light">{{ $general->cur_text }}</span>
                                 </div>
                             </div>
                         </div>
 
 
-                        <p class="text-success text-center min_bid_amount">{{ (count($product->bids) > 0)  ? ('Your bid should be greater than highest bid '.getAmount($product->bids->max('bid_amount')) . $general->cur_text) : ('Bid First! Minimum bid price ' . getAmount($product->min_bid_price) . $general->cur_text) }}</p>
+                        <p class="text-success text-center min_bid_amount">
+                            {{ count($product->bids) > 0 ? 'Your bid should be greater than highest bid ' . getAmount($product->bids->max('bid_amount')) . $general->cur_text : 'Bid First! Minimum bid price ' . getAmount($product->min_bid_price) . $general->cur_text }}
+                        </p>
 
-                        <p class="text-success text-center">@lang('Shipping Cost') {{ getAmount($product->shipping_cost) }}{{ $general->cur_text }}</p>
+                        <p class="text-success text-center">@lang('Shipping Cost')
+                            {{ getAmount($product->shipping_cost) }}{{ $general->cur_text }}</p>
                         <p class="text-success text-center total_payable"></p>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">
-                        <button type="submit" class="btn btn-primary rounded">@lang('Bid Now')</button>
+                        <button id="bidButton" type="button" class="btn btn-primary rounded">@lang('Bid Now')</button>
                     </div>
 
                 </form>
@@ -225,8 +243,106 @@
 
 
 @push('script')
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        (function ($) {
+        const bidTimeElements = document.querySelectorAll('.bid_time');
+
+        // Get the user's time zone
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Map the elements to an array of local time strings
+        const localTimeStrings = Array.from(bidTimeElements).map((timeElement) => {
+            const dateString = new Date(timeElement.innerHTML);
+
+
+            var date = new Date(dateString);
+
+
+            var options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            };
+
+            var formattedDate = date.toLocaleDateString('en-US', options);
+
+            return formattedDate;
+        });
+
+        // Update the elements with the local time strings
+        localTimeStrings.forEach((localTimeString, index) => {
+            bidTimeElements[index].innerHTML = localTimeString;
+        });
+
+
+        $(document).ready(function() {
+            $('#bidButton').click(function(e) {
+                e.preventDefault();
+
+                // Get the form data
+                var formData = $('#bidForm').serialize();
+
+                // Get the CSRF token value
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                // Send an AJAX request
+                $.ajax({
+                    url: $('#bidForm').attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        // Handle the response here
+                        console.log(response);
+                        document.querySelector('#bidModal').classList.remove('show');
+                        document.querySelector('#bidModal').style = '';
+                        document.querySelector('body').classList.remove('modal-open');
+                        document.querySelector('body').style = '';
+                        document.querySelector('.modal-backdrop').remove();
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error here
+                        console.error(xhr.responseText);
+                    }
+                });
+
+            });
+
+            $('#bid_history').click(function(e){
+                console.log($('#bidForm').attr('action'));
+            /*    $.ajax({
+                    url: $('#bidForm').attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        // Handle the response here
+                        console.log(response);
+                        document.querySelector('#bidModal').classList.remove('show');
+                        document.querySelector('#bidModal').style = '';
+                        document.querySelector('body').classList.remove('modal-open');
+                        document.querySelector('body').style = '';
+                        document.querySelector('.modal-backdrop').remove();
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error here
+                        console.error(xhr.responseText);
+                    }
+                });
+            */
+            })
+        });
+
+        (function($) {
             "use strict";
 
             /* ---------------------------------------------
@@ -240,7 +356,7 @@
                 let endDate = $(selector).text(); //comment out this 1
                 // let endDate = (new Date().getFullYear()) + '/' + (new Date().getMonth() + 1) + '/' + (new Date().getDate() + 1); // comment in this 2
                 let counterElement = document.querySelector(selector);
-                let myCountDown = new ysCountDown(endDate, function (remaining, finished) {
+                let myCountDown = new ysCountDown(endDate, function(remaining, finished) {
                     let message = "";
                     if (finished) {
                         message = "Expired";
@@ -255,18 +371,57 @@
             }
 
             // Bid
-            $(document).on("keyup", "#amount", function () {
+            $(document).on("keyup", "#amount", function() {
                 var amount = $(this).val();
                 var shipping_cost = @json(getAmount($product->shipping_cost));
                 var total_payable = (parseFloat(shipping_cost) + parseFloat(amount));
-                if (amount){
-                    $('.total_payable').text('Total Payable Amount '+ total_payable + @json($general->cur_text));
-                }else {
+                if (amount) {
+                    $('.total_payable').text('Total Payable Amount ' + total_payable +
+                        @json($general->cur_text));
+                } else {
                     $('.total_payable').text('');
                 }
             });
 
+
         })(jQuery);
+
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('8d579e60891f8897b5ac', {
+            cluster: 'mt1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+
+        channel.bind('my-event', function(data) {
+
+            var dateString = data.message.bidtime;
+
+            var date = new Date();
+
+
+            var options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            };
+
+            var formattedDate = date.toLocaleDateString('en-US', options);
+
+            var appendElement = "<tr><td class='history-price bid_amount'> $" + data.message.amount +
+                "</td><td class='history-time bid_time'>" + formattedDate + "</td><td class='history-user bid_user'>" + data.message.bidder + "</td></tr>";
+            appendElement += document.getElementsByTagName('tbody')[0].innerHTML;
+            document.getElementsByTagName('tbody')[0].innerHTML = appendElement;
+
+            document.querySelector('.min_bid_amount').innerHTML = 'Your bid should be greater than highest bid ' +
+                data.message.amount + 'USD';
+            document.querySelector('.total_payable').innerHTML = '';
+            //    }
+        });
     </script>
 @endpush
 

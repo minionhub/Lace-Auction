@@ -6,7 +6,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start About Us Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="about-us-block ptb-120">
+<div class="about-us-blockpd-t-80 pd-b-80">
     <div class="container">
         <!-- Title Row -->
         <div class="row align-items-center flex-wrap-reverse">

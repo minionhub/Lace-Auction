@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <div class="container ptb-120">
+    <div class="containerpd-t-80 pd-b-80">
         <div class="row">
             @foreach($gatewayCurrency as $data)
                 <div class="col-lg-3 col-md-3 mb-4">

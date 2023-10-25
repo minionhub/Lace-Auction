@@ -1,7 +1,7 @@
 @extends(auth()->check() ? $activeTemplate."layouts.master" : $activeTemplate."layouts.frontend")
 
 @section('content')
-    <div class=" ptb-120">
+    <div class="pd-t-80 pd-b-80">
         <div class="container ml-b-30">
 
             <div class="card bg-white-smoke custom-box-shadow">

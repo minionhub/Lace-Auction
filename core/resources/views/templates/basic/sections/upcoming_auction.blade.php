@@ -6,7 +6,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Upcomming Auction Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="upcoming-auction-block ptb-120">
+<div class="upcoming-auction-blockpd-t-80 pd-b-80">
     <div class="container ml-b-30">
         <div class="row justify-content-center">
             <div class="col-lg-9">

@@ -159,8 +159,6 @@ class UserController extends Controller
         $secret = $request->key;
 
         $oneCode = $ga->getCode($secret);
-        var_dump($$request->key);
-        var_dump($$request->code);
 
         
         if ($oneCode === $request->code) {
@@ -181,12 +179,10 @@ class UserController extends Controller
 
 
             $notify[] = ['success', 'Google Authenticator Enabled Successfully'];
-            // return back()->withNotify($notify);
-            return;
+            return back()->withNotify($notify);
         } else {
             $notify[] = ['error', 'Wrong Verification Code'];
-            // return back()->withNotify($notify);
-            return;
+            return back()->withNotify($notify);
         }
     }
 

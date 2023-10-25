@@ -1,6 +1,6 @@
 @extends($activeTemplate.'layouts.master')
 @section('content')
-    <div class="container ptb-120">
+    <div class="containerpd-t-80 pd-b-80">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-6">
                 @if(Auth::user()->ts)

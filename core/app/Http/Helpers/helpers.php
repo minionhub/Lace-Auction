@@ -621,7 +621,6 @@ function testsendMailjetMail($config, $receiver_email, $receiver_name, $email_fr
 }
 function sendMailjetMail($config, $receiver_email, $receiver_name, $subject, $message,$gnl)
 {
-    var_dump(123);
     $mj = new \Mailjet\Client($config->public_key, $config->secret_key, true, ['version' => 'v3.1']);
     $body = [
         'Messages' => [
@@ -729,14 +728,14 @@ function imagePath()
 function diffForHumans($date)
 {
     $lang = session()->get('lang');
-    Carbon::setlocale($lang);
+    Carbon::setlocale('en-US');
     return Carbon::parse($date)->diffForHumans();
 }
 
-function showDateTime($date, $format = 'd M, Y h:i A')
+function showDateTime($date, $format = 'M d, Y, h:i A')
 {
     $lang = session()->get('lang');
-    Carbon::setlocale($lang);
+    Carbon::setlocale('en-US');
     return Carbon::parse($date)->translatedFormat($format);
 }
 

@@ -4,7 +4,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Terams Conditions Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="terams-conditions-block ptb-120">
+<div class="terams-conditions-blockpd-t-80 pd-b-80">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">

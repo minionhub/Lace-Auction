@@ -4,7 +4,7 @@
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Work brand Block
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="work-brand-block ptb-120">
+<div class="work-brand-blockpd-t-80 pd-b-80">
     <div class="container">
         <div class="row">
             <div class="col-12">
