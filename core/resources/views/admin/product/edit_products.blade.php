@@ -84,9 +84,10 @@
                                     <!-- Multiple select-2 with tokenize -->
                                     <select class="select2-auto-tokenize" name="keywords[]" multiple="multiple">
                                         @if($product->keywords)
-                                        @foreach($product->keywords as $item)
-                                            <option value="{{ $item }}" selected>{{ $item }}</option>
-                                        @endforeach
+                                            @foreach($product->keywords as $item)
+                                                <option value="{{ $item }}" selected>{{ $item }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>

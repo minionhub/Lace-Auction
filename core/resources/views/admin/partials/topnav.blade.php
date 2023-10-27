@@ -1,6 +1,6 @@
 <!-- navbar-wrapper start -->
 <nav class="navbar-wrapper">
-    <form class="navbar-search" onsubmit="return false;">
+    {{-- <form class="navbar-search" onsubmit="return false;">
         <button type="submit" class="navbar-search__btn">
             <i class="las la-search"></i>
         </button>
@@ -103,6 +103,6 @@
                 </div>
             </li>
         </ul>
-    </div>
+    </div> --}}
 </nav>
 <!-- navbar-wrapper end -->

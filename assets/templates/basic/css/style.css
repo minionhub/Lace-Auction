@@ -262,6 +262,10 @@ pre {
   overflow: auto;
 }
 
+.site-logo img, .mobile-logo img {
+  width: 150px;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -10660,7 +10664,16 @@ ul.dropdown-content > .dropdown-trigger:hover > ul.dropdown-content > li:hover >
   font-weight: 500;
 }
 
+
+
 @media (max-width: 991px) {
+  .page-header-content  {
+    flex-direction: column !important;
+  }
+
+  .page-header-content .page-header-caption {
+    position: relative !important;
+  }
   .custom--table thead {
     display: none;
   }

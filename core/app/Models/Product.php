@@ -47,6 +47,11 @@ class Product extends Model
         return $this->hasMany(Bid::class)->with('user');
     }
 
+    public function proxy_bids()
+    {
+        return $this->hasMany(ProxyBid::class)->with('user');
+    }
+
     public function winner()
     {
         return $this->belongsTo(Winner::class)->withDefault();
@@ -56,5 +61,10 @@ class Product extends Model
     public function userBidExist()
     {
         return $this->bids()->where('user_id', auth()->id())->first();
+    }
+
+    public function proxyBidExist()
+    {
+        return $this->proxy_bids()->where('user_id', auth()->id())->first();
     }
 }

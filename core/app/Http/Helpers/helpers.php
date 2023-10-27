@@ -31,8 +31,8 @@ function sidebarVariation(){
 
 function systemDetails()
 {
-    $system['name'] = 'bidlab';
-    $system['version'] = '1.1';
+    $system['name'] = 'LACE';
+    $system['version'] = '1.0';
     return $system;
 }
 

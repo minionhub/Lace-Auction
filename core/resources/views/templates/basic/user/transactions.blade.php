@@ -22,7 +22,7 @@
                             <td data-label="@lang('Balance')" class="text-info">{{ getAmount($data->post_balance) }} {{__($general->cur_text)}}</td>
                             <td data-label="@lang('Details')">{{ $data->details }}</td>
                             <td data-label="@lang('Date')">
-                                <i class="fa fa-calendar"></i> {{showDateTime($data->created_at)}}
+                                <i class="fa fa-calendar"></i> <span class="bid_time">{{showDateTime($data->created_at)}}</span>
                             </td>
                         </tr>
                     @empty

@@ -16,7 +16,7 @@
                     <tbody>
                         @forelse($winners as $data)
                             <tr>
-                                <td data-label="@lang('Date')">{{ showDateTime($data->created_at) }}</td>
+                                <td data-label="@lang('Date')"><span class="bid_time">{{ showDateTime($data->created_at) }}</span></td>
                                 <td data-label="@lang('Product')"><a href="{{ route('auction.details', [$data->bid->product_id, slug($data->bid->product->name)]) }}" target="_blank">{{ __(@$data->bid->product->name)  }}</a></td>
                                 <td>
                                     @if($data->shipping_status === 0)

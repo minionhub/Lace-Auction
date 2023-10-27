@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(Bid::class);
     }
 
+    public function proxy_bids()
+    {
+        return $this->hasMany(ProxyBid::class);
+    }
+
     public function winProducts()
     {
         return $this->hasMany(Winner::class);

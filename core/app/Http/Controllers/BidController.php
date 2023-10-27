@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminNotification;
 use App\Models\Bid;
+use App\Models\ProxyBid;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Winner;
@@ -16,7 +17,6 @@ class BidController extends Controller
     public function bid(Request $request, $product_id, $slug)
     {
         $product = Product::running()->where('id',$product_id)->firstOrFail();
-
         if (count($product->bids) > 0){
             $min_amount = getAmount($product->bids->max('bid_amount'));
 
@@ -32,31 +32,56 @@ class BidController extends Controller
         }
 
         $_existing_user_bid = $product->userBidExist();
-        // if ($_existing_user_bid){
-        //     $_old_bid_amount = $_existing_user_bid->bid_amount;
-        //     $_old_shipping_cost = $_existing_user_bid->shipping_cost;
-        //     $_old_amount = $_old_bid_amount + $_old_shipping_cost;
-        //     $total_payable = ($request->amount + $product->shipping_cost) - $_old_amount;
-
-        //     //Exist bid object
-        //     $bid = $_existing_user_bid;
-        // } else {
-            $total_payable = $request->amount + $product->shipping_cost;
-
-            //Creating bid object if not exist
-            $bid = new Bid();
-        // }
+        $total_payable = $request->amount + $product->shipping_cost;
 
         // Subtract User balance
         $user = auth()->user();
         if ($user->balance < $total_payable){
-            $notify[] = ['error', __("You don't have enough balance! Please deposit and bid again.")];
-            return back()->withNotify($notify);
+            $notify[] = ['error', "You don't have enough balance! Please deposit and bid again."];
+            return $notify;
         }
-        $user->balance -= $total_payable;
+
+
+        // if Auction Close  $user->balance -= $total_payable;
+        // $user->balance -= $total_payable;
+
         $user->save();
+        
+        if ($request->proxyBidding == 'on') {   
+            $record = ProxyBid::where('product_id', $product_id)->first();
+            if ($record) {
+                if ($record->max_amount < $request->amount) {
+                    $record->user_id = $user->id;
+                    $record->max_amount = $request->amount;
+                    // bid the new user
+                } else {
+                    // bid
+                }
+            } else {
+                $record = new ProxyBid();
+                $record->user_id = $user->id;
+                $record->product_id = $product_id;
+                $record->max_amount = $request->amount;
+
+                //bid
+            }
+            $record->save();
+        }
+         else {
+            // proxyBidding == 'off'
+            $record = ProxyBid::where('product_id', $product_id)->first();
+            if ($record) {
+                // proxyBidding exist
+                //bid
+            } else {
+                // proxy doesn't exist
+                // general bid
+            }
+            
+        }
 
         //Bid
+        $bid = new Bid();
         $bid->product_id = $product_id;
         $bid->user_id = $user->id;
         $bid->bid_amount = $request->amount;
@@ -65,14 +90,15 @@ class BidController extends Controller
         $bid->save();
 
         //Transaction
-        $transaction = new Transaction();
-        $transaction->user_id = $user->id;
-        $transaction->amount = getAmount($total_payable);
-        $transaction->post_balance = getAmount($user->balance);
-        $transaction->trx_type = '-';
-        $transaction->details = 'Bid to ' . $product->name;
-        $transaction->trx = getTrx();
-        $transaction->save();
+
+        // $transaction = new Transaction();
+        // $transaction->user_id = $user->id;
+        // $transaction->amount = getAmount($total_payable);
+        // $transaction->post_balance = getAmount($user->balance);
+        // $transaction->trx_type = '-';
+        // $transaction->details = 'Bid to ' . $product->name;
+        // $transaction->trx = getTrx();
+        // $transaction->save();
 
         //Admin Notification
         $adminNotification = new AdminNotification();
@@ -90,7 +116,6 @@ class BidController extends Controller
 
         $notify[] = ['success', "Successfully bid on the product!"];
         return $notify;
-        // return back()->withNotify($notify);
     }
 
     //User bids list

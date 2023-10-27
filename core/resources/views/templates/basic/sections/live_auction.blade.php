@@ -47,7 +47,7 @@
                                 @empty
                                 @endforelse
                             </a>
-                            <div class="bid-max">{{ count($item->bids) }} x <span class="icon-user-1"></span></div>
+                            <div class="bid-max">{{ count($item->bids) }} x <span class="icon-hammer2"></span></div>
                             @if (count($item->bids) > 0)
                                 <div class="item-price">@lang('Highest Bid'): {{ $general->cur_sym }}
                                     {{ getAmount($item->bids->max('bid_amount')) }}</div>
@@ -177,7 +177,16 @@
                 if ($(selector).length) {
                     // If you need specific date then comment out 1 and comment in 2
                     // let endDate = "2021/05/20"; //comment out this 1
-                    let endDate = $(selector).text(); //comment out this 1
+                    //let endDate = $(selector).text(); //comment out this 1
+
+                    var serverTimeStr = document.querySelector('#serverTime').innerHTML;
+                    var serverTime = new Date(serverTimeStr);
+
+                    var clientTime = new Date();
+                    var timeGap = clientTime - serverTime;
+
+                    const dateString = new Date($(selector).text());
+                    const endDate = new Date(dateString.getTime() + timeGap);
                     // let endDate = (new Date().getFullYear()) + '/' + (new Date().getMonth() + 1) + '/' + (new Date().getDate() + 1); // comment in this 2
                     let counterElement = document.querySelector(selector);
                     let myCountDown = new ysCountDown(endDate, function(remaining, finished) {
@@ -225,6 +234,5 @@
         })(jQuery);
 
         // Enable pusher logging - don't include this in production
-        
     </script>
 @endpush

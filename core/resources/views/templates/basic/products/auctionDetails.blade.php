@@ -2,8 +2,8 @@
 
 @section('content')
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                                                            Start Product Details Block
-                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                                                                                        Start Product Details Block
+                                                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <div class="product-details-block ptb-120">
         <div class="container">
@@ -75,7 +75,7 @@
                                 </div>
                             @else
                                 <div class="bid-timer-area">
-                                    <div class="bid-timer">{{ $product->winner->user->fullname }}</div>
+                                    <div class="bid-timer">{{ $product->winner->bid->fullname }}</div>
                                     @if ($product->winner->bid->bid_amount)
                                         <p>@lang('Bid Amount') {{ $general->cur_sym }}
                                             {{ getAmount($product->winner->bid->bid_amount) }}</p>
@@ -95,7 +95,8 @@
                                             role="tab">@lang('Auction Information')</a>
                                     </li>
                                     <li>
-                                        <a data-toggle="tab" id="bid_history" href="#auction_history" role="tab">@lang('Bidding History')</a>
+                                        <a data-toggle="tab" id="bid_history" href="#auction_history"
+                                            role="tab">@lang('Bidding History')</a>
                                     </li>
                                 </ul>
                             </div><!--~./ end filter info tab ~-->
@@ -109,9 +110,11 @@
                                         <li>@lang('Shipping Cost') :
                                             <span>{{ $general->cur_sym }}{{ getAmount(@$product->shipping_cost) }}</span>
                                         </li>
-                                        <li>@lang('Start Date') : <span>{{ @showDateTime($product->start_date) }}</span>
+                                        <li>@lang('Start Date') : <span
+                                                class="bid_time">{{ @showDateTime($product->start_date) }}</span>
                                         </li>
-                                        <li>@lang('End Date') : <span>{{ @showDateTime($product->end_date) }}</span></li>
+                                        <li>@lang('End Date') : <span
+                                                class="bid_time">{{ @showDateTime($product->end_date) }}</span></li>
                                         <li>@lang('Delivery Time') : <span>{{ $product->delivery_time }}</span></li>
                                     </ul>
                                 </div><!--~./ end tab pane ~-->
@@ -200,17 +203,17 @@
                     <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
 
-                <form id="bidForm" action="{{   }}"
+                <form id="bidForm" action="{{ route('user.bid', [$product->id, slug($product->name)]) }}"
                     method="post">
                     @csrf
 
                     <!-- Modal body -->
                     <div class="modal-body custom_border">
                         <div class="form-group">
-                            <label for="amount">@l ang('Bid Amount')</label>
-                            <div class="input     -group">
+                            <label for="amount">@lang('Bid Amount')</label>
+                            <div class="input-group">
                                 <input id="amount" type="text" class="form-control form-controller"
-                                    onkeyup="this.valuefdghf fg = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount"
+                                    onkeyup="this.value = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount"
                                     placeholder="0.00" required="" value="" autocomplete="off">
                                 <div class="input-group-prepend">
                                     <span
@@ -231,6 +234,12 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">
+                        <div style="display: flex; margin-right: auto; margin-left: 12px;">
+                            <input type="checkbox" style="width: 16px; height: 16px; margin: auto;" name="proxyBidding"
+                                id="proxyBid">
+                            <label for="proxyBid" style="margin: 0; font-size: 16px; padding-left: 6px;"> Proxy
+                                Bidding</label>
+                        </div>
                         <button id="bidButton" type="button" class="btn btn-primary rounded">@lang('Bid Now')</button>
                     </div>
 
@@ -244,42 +253,8 @@
 
 @push('script')
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        const bidTimeElements = document.querySelectorAll('.bid_time');
-
-        // Get the user's time zone
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        // Map the elements to an array of local time strings
-        const localTimeStrings = Array.from(bidTimeElements).map((timeElement) => {
-            const dateString = new Date(timeElement.innerHTML);
-
-
-            var date = new Date(dateString);
-
-
-            var options = {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-            };
-
-            var formattedDate = date.toLocaleDateString('en-US', options);
-
-            return formattedDate;
-        });
-
-        // Update the elements with the local time strings
-        localTimeStrings.forEach((localTimeString, index) => {
-            bidTimeElements[index].innerHTML = localTimeString;
-        });
-
-
         $(document).ready(function() {
             $('#bidButton').click(function(e) {
                 e.preventDefault();
@@ -290,56 +265,60 @@
                 // Get the CSRF token value
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                // Send an AJAX request
-                $.ajax({
-                    url: $('#bidForm').attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        // Handle the response here
-                        console.log(response);
-                        document.querySelector('#bidModal').classList.remove('show');
-                        document.querySelector('#bidModal').style = '';
-                        document.querySelector('body').classList.remove('modal-open');
-                        document.querySelector('body').style = '';
-                        document.querySelector('.modal-backdrop').remove();
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle the error here
-                        console.error(xhr.responseText);
-                    }
-                });
+
+                document.querySelector('#bidModal').classList.remove('show');
+                document.querySelector('#bidModal').style = '';
+                document.querySelector('body').classList.remove('modal-open');
+                document.querySelector('body').style = '';
+                document.querySelector('.modal-backdrop').remove();
+
+                // get limit amount from notice string
+                const inputString = $('.min_bid_amount').text();
+                const numberPattern = /\d+/; // Matches one or more digits
+                const match = inputString.match(numberPattern);
+                var limit_amount;
+
+                if (match) {
+                    limit_amount = match[0];
+                }
+
+                if ($('#amount')[0].value > limit_amount) {
+                    // Send an AJAX request
+                    $.ajax({
+                        url: $('#bidForm').attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function(response) {
+                            // Handle the response here
+                            console.log(response[0][1]);
+                            iziToast.success({
+                                message: response[0][1],
+                                timeout: 3000, // Timeout in milliseconds
+                                position: 'topRight', // Display position (e.g., 'bottomRight', 'topLeft', 'topCenter')
+                            });
+
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle the error here
+                            iziToast.error({
+                                message: response[0][1],
+                                timeout: 3000, // Timeout in milliseconds
+                                position: 'topRight', // Display position (e.g., 'bottomRight', 'topLeft', 'topCenter')
+                            });
+                        }
+                    });
+                } else {
+                    iziToast.error({
+                        message: $('.min_bid_amount').text(),
+                        timeout: 3000, // Timeout in milliseconds
+                        position: 'topRight', // Display position (e.g., 'bottomRight', 'topLeft', 'topCenter')
+                    });
+                }
 
             });
-
-            $('#bid_history').click(function(e){
-                console.log($('#bidForm').attr('action'));
-            /*    $.ajax({
-                    url: $('#bidForm').attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        // Handle the response here
-                        console.log(response);
-                        document.querySelector('#bidModal').classList.remove('show');
-                        document.querySelector('#bidModal').style = '';
-                        document.querySelector('body').classList.remove('modal-open');
-                        document.querySelector('body').style = '';
-                        document.querySelector('.modal-backdrop').remove();
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle the error here
-                        console.error(xhr.responseText);
-                    }
-                });
-            */
-            })
         });
 
         (function($) {
@@ -353,13 +332,23 @@
             if ($(selector).length) {
                 // If you need specific date then comment out 1 and comment in 2
                 // let endDate = "2021/05/20"; //comment out this 1
-                let endDate = $(selector).text(); //comment out this 1
+                // let endDate = $(selector).text(); //comment out this 1
+                var serverTimeStr = document.querySelector('#serverTime').innerHTML;
+                var serverTime = new Date(serverTimeStr);
+
+                var clientTime = new Date();
+                var timeGap = clientTime - serverTime;
+
+                const dateString = new Date($(selector).text());
+                const endDate = new Date(dateString.getTime() + timeGap);
+
                 // let endDate = (new Date().getFullYear()) + '/' + (new Date().getMonth() + 1) + '/' + (new Date().getDate() + 1); // comment in this 2
                 let counterElement = document.querySelector(selector);
                 let myCountDown = new ysCountDown(endDate, function(remaining, finished) {
                     let message = "";
                     if (finished) {
                         message = "Expired";
+                        location.reload();
                     } else {
                         var re_hours = (remaining.totalDays * 24) + remaining.hours;
                         message += re_hours + " : ";
@@ -386,7 +375,7 @@
 
         })(jQuery);
 
-        Pusher.logToConsole = true;
+        //        Pusher.logToConsole = true;
 
         var pusher = new Pusher('8d579e60891f8897b5ac', {
             cluster: 'mt1'
@@ -413,7 +402,8 @@
             var formattedDate = date.toLocaleDateString('en-US', options);
 
             var appendElement = "<tr><td class='history-price bid_amount'> $" + data.message.amount +
-                "</td><td class='history-time bid_time'>" + formattedDate + "</td><td class='history-user bid_user'>" + data.message.bidder + "</td></tr>";
+                "</td><td class='history-time bid_time'>" + formattedDate +
+                "</td><td class='history-user bid_user'>" + data.message.bidder + "</td></tr>";
             appendElement += document.getElementsByTagName('tbody')[0].innerHTML;
             document.getElementsByTagName('tbody')[0].innerHTML = appendElement;
 

@@ -1,4 +1,4 @@
-@extends($activeTemplate.'layouts.frontend')
+@extends($activeTemplate . 'layouts.frontend')
 
 @section('content')
     <div class="live-auction-block bg-white-smoke pd-t-80 pd-b-80">
@@ -18,20 +18,20 @@
                             <div class="item-img">
                                 <a href="{{ route('auction.details', [$item->id, slug($item->name)]) }}">
                                     @forelse($item->images as $image)
-                                        @if($loop->first)
-                                            <img src="{{ getImage(imagePath()["products"]["path"] . "/" . $image) }}"
-                                                 alt="Thumbnail">
+                                        @if ($loop->first)
+                                            <img src="{{ getImage(imagePath()['products']['path'] . '/' . $image) }}"
+                                                alt="Thumbnail">
                                         @endif
-                                        @if($loop->iteration == 2)
+                                        @if ($loop->iteration == 2)
                                             <img class="prod2"
-                                                 src="{{ getImage(imagePath()["products"]["path"] . "/" . $image) }}"
-                                                 alt="Thumbnail">
+                                                src="{{ getImage(imagePath()['products']['path'] . '/' . $image) }}"
+                                                alt="Thumbnail">
                                         @endif
                                     @empty
                                     @endforelse
                                 </a>
-                                <div class="bid-max">{{ count($item->bids) }} x <span class="icon-user-1"></span></div>
-                                @if(count($item->bids) > 0)
+                                <div class="bid-max">{{ count($item->bids) }} x <span class="icon-hammer2"></span></div>
+                                @if (count($item->bids) > 0)
                                     <div class="item-price">@lang('Highest Bid')
                                         : {{ $general->cur_sym }} {{ getAmount($item->bids->max('bid_amount')) }}</div>
                                 @else
@@ -40,13 +40,15 @@
                             </div><!-- /.item-img -->
                             <div class="item-footer">
                                 <div class="item-footer-top">
-                                    <div
-                                        class="bid-price">{{ $general->cur_sym }}{{ getAmount($item->min_bid_price) }}</div>
+                                    <div class="bid-price">{{ $general->cur_sym }}{{ getAmount($item->min_bid_price) }}
+                                    </div>
                                     <div class="bid-timer-area">
 
-                                        @if(now()->between(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$item->start_date)->toDateTimeString(),\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$item->end_date)->toDateTimeString()))
-                                            <div id="bid_counter{{ $loop->iteration }}"
-                                                 class="bid-timer">{{ $item->end_date }}</div>
+                                        @if (now()->between(
+                                                \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->start_date)->toDateTimeString(),
+                                                \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->end_date)->toDateTimeString()))
+                                            <div id="bid_counter{{ $loop->iteration }}" class="bid-timer">
+                                                {{ $item->end_date }}</div>
                                             <p>@lang('Waiting For Bid')</p>
                                         @elseif($item->start_date > now() && $item->end_date > now())
                                             <div class="text-primary h4 font-weight-bold">@lang('Upcoming')</div>
@@ -58,14 +60,15 @@
                                 </div>
                                 <div class="bid-button">
 
-                                    @if(now()->between(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$item->start_date)->toDateTimeString(),\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$item->end_date)->toDateTimeString()))
+                                    @if (now()->between(
+                                            \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->start_date)->toDateTimeString(),
+                                            \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->end_date)->toDateTimeString()))
                                         @auth
-                                            <a href="javascript:void(0)" class="btn btn-default bidBtn"
-                                               data-toggle="tooltip"
-                                               data-url="{{ route('user.bid', [$item->id, slug($item->name)]) }}"
-                                               data-min_bid_amount="{{ (count($item->bids) > 0)  ? ('Your bid should be greater than highest bid '.getAmount($item->bids->max('bid_amount')) . $general->cur_text) : ('Bid First! Minimum bid price ' . getAmount($item->min_bid_price) . $general->cur_text) }}"
-                                               data-shipping_cost="{{ getAmount($item->shipping_cost) }}"
-                                               data-name="{{ $item->name }}">
+                                            <a href="javascript:void(0)" class="btn btn-default bidBtn" data-toggle="tooltip"
+                                                data-url="{{ route('user.bid', [$item->id, slug($item->name)]) }}"
+                                                data-min_bid_amount="{{ count($item->bids) > 0 ? 'Your bid should be greater than highest bid ' . getAmount($item->bids->max('bid_amount')) . $general->cur_text : 'Bid First! Minimum bid price ' . getAmount($item->min_bid_price) . $general->cur_text }}"
+                                                data-shipping_cost="{{ getAmount($item->shipping_cost) }}"
+                                                data-name="{{ $item->name }}">
                                                 @lang('Bid Now')
                                             </a>
                                         @else
@@ -96,25 +99,26 @@
                 </div>
 
                 <form action="" method="post">
-                @csrf
+                    @csrf
 
-                <!-- Modal body -->
+                    <!-- Modal body -->
                     <div class="modal-body custom_border">
                         <div class="form-group">
                             <label for="amount">@lang('Bid Amount')</label>
                             <div class="input-group">
                                 <input id="amount" type="text" class="form-control form-controller"
-                                       onkeyup="this.value = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount"
-                                       placeholder="0.00" required="" value="" autocomplete="off">
+                                    onkeyup="this.value = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount"
+                                    placeholder="0.00" required="" value="" autocomplete="off">
                                 <div class="input-group-prepend">
-                                <span
-                                    class="input-group-text bg-white-smoke custom_border_span text-light">{{ $general->cur_text }}</span>
+                                    <span
+                                        class="input-group-text bg-white-smoke custom_border_span text-light">{{ $general->cur_text }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <p class="text-success text-center min_bid_amount"></p>
-                        <p class="text-success text-center">@lang('Shipping Cost') <span id="shipping_cost"></span> {{ $general->cur_text }}</p>
+                        <p class="text-success text-center">@lang('Shipping Cost') <span id="shipping_cost"></span>
+                            {{ $general->cur_text }}</p>
                         <p class="text-success text-center total_payable"></p>
                     </div>
 
@@ -149,7 +153,7 @@
 
 @push('script')
     <script>
-        (function ($) {
+        (function($) {
             "use strict";
 
             /* ---------------------------------------------
@@ -162,10 +166,19 @@
                 if ($(selector).length) {
                     // If you need specific date then comment out 1 and comment in 2
                     // let endDate = "2021/05/20"; //comment out this 1
-                    let endDate = $(selector).text(); //comment out this 1
+                    //let endDate = $(selector).text(); //comment out this 1
+
+                    var serverTimeStr = document.querySelector('#serverTime').innerHTML;
+                    var serverTime = new Date(serverTimeStr);
+
+                    var clientTime = new Date();
+                    var timeGap = clientTime - serverTime;
+
+                    const dateString = new Date($(selector).text());
+                    const endDate = new Date(dateString.getTime() + timeGap);
                     // let endDate = (new Date().getFullYear()) + '/' + (new Date().getMonth() + 1) + '/' + (new Date().getDate() + 1); // comment in this 2
                     let counterElement = document.querySelector(selector);
-                    let myCountDown = new ysCountDown(endDate, function (remaining, finished) {
+                    let myCountDown = new ysCountDown(endDate, function(remaining, finished) {
                         let message = "";
                         if (finished) {
                             message = "Expired";
@@ -181,7 +194,7 @@
             }
 
             // Bid
-            $('.bidBtn').on('click', function () {
+            $('.bidBtn').on('click', function() {
                 $('#amount').val("");
 
                 var modal = $('#bidModal');
@@ -195,12 +208,13 @@
                 modal.find('form').attr('action', url);
                 modal.modal('show');
 
-                $(document).on("keyup", "#amount", function () {
+                $(document).on("keyup", "#amount", function() {
                     var amount = $(this).val();
                     var total_payable = (parseFloat(shipping_cost) + parseFloat(amount));
-                    if (amount){
-                        $('.total_payable').text('Total Payable Amount '+ total_payable + @json($general->cur_text));
-                    }else {
+                    if (amount) {
+                        $('.total_payable').text('Total Payable Amount ' + total_payable +
+                            @json($general->cur_text));
+                    } else {
                         $('.total_payable').text('');
                     }
                 });

@@ -23,9 +23,9 @@ class FrontendController extends Controller
             $templates[$i]['image'] = asset($temp) . '/preview.jpg';
             $i++;
         }
+
         $extra_templates = json_decode(getTemplates(), true);
         return view('admin.frontend.templates', compact('page_title', 'templates', 'extra_templates'));
-
     }
 
     public function templatesActive(Request $request)

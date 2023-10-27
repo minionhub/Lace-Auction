@@ -10,6 +10,10 @@ use App\Models\Product;
 use App\Models\SupportAttachment;
 use App\Models\SupportMessage;
 use App\Models\SupportTicket;
+use App\Models\Winner;
+use App\Models\Transaction;
+
+use App\Events\MyEvent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -213,9 +217,44 @@ class SiteController extends Controller
     // Auction Details
     public function auctionDetails($product_id, $slug)
     {
+        $serverTime = Carbon::now();
         $product = Product::with(['bids', 'category'])->findOrFail($product_id);
+        // $product_endTime = Product::where('product_id', $product_id)->first()->end_time;
+        if ($serverTime > $product->end_date) {
+            $product->winner_id = $product->bids->last()->user_id;
+
+            if($product->bids->count()) {
+                $product->bid_complete = 1;
+                
+                //save in winnder table
+                $existingWinner = Winner::where('bid_id', $product->bids->last()->id)->first();
+                if (!$existingWinner) {
+                    $winner = new Winner();
+                    $winner->bid_id = $product->bids->last()->id;
+                    $winner->user_id = $product->bids->last()->user_id;
+                    $winner->shipping_status = 0;
+                    $winner->save();
+
+                    //save transaction table
+                    $transaction = new Transaction();
+                    $transaction->user_id = $product->bids->last()->user_id;
+                    $transaction->amount = getAmount($product->bids->last()->bid_amount);
+                    $transaction->post_balance = getAmount( $product->bids->last()->user->balance - $product->bids->last()->bid_amount);
+                    $transaction->trx_type = '-';
+                    $transaction->details = 'Bid to ' . $product->name;
+                    $transaction->trx = getTrx();
+                    $transaction->save();
+                }
+
+            }
+        }
+        if ($product->bid_complete == 1) {
+            $product->winner->bid->fullname = $product->bids->last()->user->firstname . " " . $product->bids->last()->user->lastname;
+            $product->winner->bid->bid_amount = $product->bids->last()->bid_amount;
+        }
 
         $page_title = 'Auction Details';
+
         return view($this->activeTemplate.'products.auctionDetails',compact('product','page_title'));
     }
 
@@ -247,7 +286,6 @@ class SiteController extends Controller
     {
         $live_auction_content = getContent('live_auction.content', true);
         $live_products = Product::running()->with(['category', 'bids'])->latest()->paginate(getPaginate());
-
         $page_title = 'Live Auction';
         return view($this->activeTemplate.'products.live_auction',compact('live_products','live_auction_content', 'page_title'));
     }

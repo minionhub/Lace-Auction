@@ -63,7 +63,6 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 
-
         $this->validateLogin($request);
 
         if(isset($request->captcha)){
@@ -178,6 +177,5 @@ class LoginController extends Controller
 
         return redirect()->route('user.home');
     }
-
 
 }
