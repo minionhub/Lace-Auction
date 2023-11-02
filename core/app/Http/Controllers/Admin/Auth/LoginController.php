@@ -69,7 +69,7 @@ class LoginController extends Controller
     {
 
         $this->validateLogin($request);
-        $lv = @getLatestVersion();
+        $lv = null;
         $gnl = GeneralSetting::first();
         if (@systemDetails()['version'] < @json_decode($lv)->version) {
             $gnl->sys_version = $lv;

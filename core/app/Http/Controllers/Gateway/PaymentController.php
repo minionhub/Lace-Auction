@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AdminNotification;
 use App\Models\Deposit;
 use App\Models\GatewayCurrency;
+use App\Models\Gateway;
 use App\Models\GeneralSetting;
 use App\Models\Transaction;
 use App\Models\User;
@@ -22,9 +23,7 @@ class PaymentController extends Controller
 
     public function deposit()
     {
-        $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
-            $gate->where('status', 1);
-        })->with('method')->orderby('method_code')->get();
+        $gatewayCurrency = Gateway::get();
         $page_title = 'Deposit Methods';
         return view($this->activeTemplate . 'user.payment.deposit', compact('gatewayCurrency', 'page_title'));
     }

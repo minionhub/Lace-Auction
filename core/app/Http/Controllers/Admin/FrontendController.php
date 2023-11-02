@@ -24,7 +24,7 @@ class FrontendController extends Controller
             $i++;
         }
 
-        $extra_templates = json_decode(getTemplates(), true);
+        $extra_templates = json_decode(null, true);
         return view('admin.frontend.templates', compact('page_title', 'templates', 'extra_templates'));
     }
 

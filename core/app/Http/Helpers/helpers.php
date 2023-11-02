@@ -36,20 +36,6 @@ function systemDetails()
     return $system;
 }
 
-function getLatestVersion()
-{
-    $param['purchasecode'] = env("PURCHASECODE");
-    $param['website'] = @$_SERVER['HTTP_HOST'] . @$_SERVER['REQUEST_URI'] . ' - ' . env("APP_URL");
-    $url = 'https://license.viserlab.com/updates/version/' . systemDetails()['name'];
-    $result = curlPostContent($url, $param);
-    if ($result) {
-        return $result;
-    } else {
-        return null;
-    }
-}
-
-
 function slug($string)
 {
     return Illuminate\Support\Str::slug($string);
@@ -432,21 +418,6 @@ function siteName()
     }
 
     return $title;
-}
-
-
-//moveable
-function getTemplates()
-{
-    $param['purchasecode'] = env("PURCHASECODE");
-    $param['website'] = @$_SERVER['HTTP_HOST'] . @$_SERVER['REQUEST_URI'] . ' - ' . env("APP_URL");
-    $url = 'https://license.viserlab.com/updates/templates/' . systemDetails()['name'];
-    $result = curlPostContent($url, $param);
-    if ($result) {
-        return $result;
-    } else {
-        return null;
-    }
 }
 
 

@@ -2,8 +2,8 @@
 
 @section('content')
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                                                                                                                                                    Start Product Details Block
-                                                                                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                                                                                                                                        Start Product Details Block
+                                                                                                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <div class="product-details-block ptb-120">
         <div class="container">
@@ -84,7 +84,14 @@
                                 </div>
                             @else
                                 <div class="bid-timer-area">
-                                    <div class="bid-timer">{{ $product->winner->bid->fullname }}</div>
+                                    <div class="bid-timer">
+                                        @if ($product->winner)
+                                            {{ $product->winner->bid->fullname }}
+                                        @else
+                                            {{ $product->bids->count() }}
+                                        @endif
+                                    </div>
+
                                     {{-- @if ($product->winner->bid->bid_amount)
                                         <p>@lang('Bid Amount') {{ $general->cur_sym }}
                                             {{ getAmount($product->winner->bid->bid_amount) }}</p>
@@ -136,7 +143,8 @@
 
                                 <!--~~~~~ Start Tab Pane ~~~~~-->
                                 <div class="tab-pane fade" id="auction_history" role="tabpanel">
-                                    <div class="table-responsive auction-history-table" data-animate="hg-fadeInUp">
+                                    <div class="table-responsive auction-history-table" data-animate="hg-fadeInUp"
+                                        style="height: 500px;">
                                         <table class="table">
                                             <thead>
                                                 <tr>
@@ -286,7 +294,7 @@
                             <input type="checkbox" style="width: 16px; height: 16px; margin: auto;" name="proxyBidding"
                                 id="proxyBid">
                             <label for="proxyBid" style="margin: 0; font-size: 16px; padding-left: 6px;"> Proxy
-                                Bidding</label>
+                                Bid</label>
                         </div>
                         <button id="bidButton" type="button" class="btn btn-primary rounded">@lang('Bid Now')</button>
                     </div>
