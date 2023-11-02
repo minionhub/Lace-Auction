@@ -97,21 +97,25 @@ function uploadImage($file, $location, $size = null, $old = null, $thumb = null)
 {
     $path = makeDirectory($location);
     if (!$path) throw new Exception('File could not been created.');
-
     if (!empty($old)) {
         removeFile($location . '/' . $old);
         removeFile($location . '/thumb_' . $old);
     }
     $filename = uniqid() . time() . '.' . $file->getClientOriginalExtension();
-    $image = Image::make($file);
-    if (!empty($size)) {
-        $size = explode('x', strtolower($size));
-        $image->resize($size[0], $size[1],function($constraint){
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+    if ($size == 'pdf') {
+        $file->move($location, $filename);
+    } else {
+        $image = Image::make($file);
+        if (!empty($size)) {
+            $size = explode('x', strtolower($size));
+            $image->resize($size[0], $size[1],function($constraint){
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        }
+        $image->save($location . '/' . $filename);
     }
-    $image->save($location . '/' . $filename);
+
 
     if (!empty($thumb)) {
 
@@ -721,6 +725,10 @@ function imagePath()
     $data['products'] = [
         'path' => 'assets/images/products',
         'size' => '800x800'
+    ];
+
+    $data['pdf'] = [
+        'path' => 'assets/pdf',
     ];
     return $data;
 }

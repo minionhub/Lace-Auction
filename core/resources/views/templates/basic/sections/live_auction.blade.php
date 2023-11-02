@@ -67,7 +67,8 @@
                             </div>
                             <div class="bid-button">
                                 @auth
-                                    <a href="javascript:void(0)" class="btn btn-default bidBtn" data-toggle="tooltip"
+                                    <a href={{ route('auction.details', [$item->id, slug($item->name)]) }}
+                                        class="btn btn-default" data-toggle="tooltip"
                                         data-url="{{ route('user.bid', [$item->id, slug($item->name)]) }}"
                                         data-min_bid_amount="{{ count($item->bids) > 0 ? 'Your bid should be greater than highest bid ' . getAmount($item->bids->max('bid_amount')) . $general->cur_text : 'Bid First! Minimum bid price ' . getAmount($item->min_bid_price) . $general->cur_text }}"
                                         data-shipping_cost="{{ getAmount($item->shipping_cost) }}"
@@ -164,6 +165,7 @@
 
 @push('script')
     <script>
+
         (function($) {
             "use strict";
 

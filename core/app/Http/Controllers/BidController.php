@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminNotification;
 use App\Models\Bid;
 use App\Models\ProxyBid;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Winner;
@@ -46,60 +47,155 @@ class BidController extends Controller
         // $user->balance -= $total_payable;
 
         $user->save();
-        
-        if ($request->proxyBidding == 'on') {   
-            $record = ProxyBid::where('product_id', $product_id)->first();
-            if ($record) {
-                if ($record->max_amount < $request->amount) {
-                    $record->user_id = $user->id;
-                    $record->max_amount = $request->amount;
-                    // bid the new user
-                } else {
-                    // bid
+
+
+        // proxy bidding
+        if ($request->proxyBidding == 'on') {
+            // previous proxy
+            $previous = ProxyBid::where('product_id', $product_id)->first(); 
+            //previous proxy exist
+            if ($previous) {
+                // same user, update proxy
+                if ($previous->user_id == $user->id) {
+                        // updated proxy
+                        // Update($previous->amount, $request->amount);
+                        $previous->amount = $request->amount;
+                        $previous->save();
+                }
+                // change proxy
+                else {
+                    $previous_user = User::where('id', $previous->user_id)->first();
+                    if ($previous->amount < $request->amount) {
+                        // Delete($previous);
+                        $previous->delete();
+                        // Bid($previous->amount);
+                        $this->placeBid($product_id, $product, $previous_user, $previous->amount);
+
+                        if ($request->amount > $previous->amount + 10) {
+                            // Create($request);
+                            $this->storeProxyBid($product_id, $user->id, $request->amount);
+                            // Bid($request->amount + 10);
+                            $this->placeBid($product_id, $product, $user, $previous->amount + 10, $user->id);
+                        }
+                        else
+                            // Bid($request->amount);
+                            $this->placeBid($product_id, $product, $user, $request->amount);
+                    } else {
+                        // Bid($request->amount);
+                        $this->placeBid($product_id, $product, $user, $request->amount);
+
+                        if ($previous->amount > $request->amount + 10)
+                            // Bid($request->amount + 10);
+                            $this->placeBid($product_id, $product, $previous_user, $request->amount + 10, $previous_user->id);
+                        else {
+                            // Delete($previous);
+                            $previous->delete();
+                            // Bid($previous->amount);
+                            $this->placeBid($product_id, $product, $previous_user, $previous->amount);
+                        }
+                    }
                 }
             } else {
-                $record = new ProxyBid();
-                $record->user_id = $user->id;
-                $record->product_id = $product_id;
-                $record->max_amount = $request->amount;
+                //previous proxy doesn't exist, regist new proxy
+                $currentMaxBid = ($product->bids->last()->bid_amount ?? $product->min_bid_price);
+                if($request->amount > $currentMaxBid + 10) {
+                    // Create($request);
+                    $this->storeProxyBid($product_id, $user->id, $request->amount);
 
-                //bid
+                    if ($product->bids->last()->user_id != $user->id)
+                        $this->placeBid($product_id, $product, $user, $currentMaxBid + 10, $user->id);
+                    else {
+                        $data = [
+                            'isProxy' => $user->id,
+                        ];
+                        event(new MyEvent($data));
+                    }
+
+                } else {
+                    if ($product->bids->last()->user_id == $user->id) {
+                        $this->storeProxyBid($product_id, $user->id, $request->amount);
+
+                        $data = [
+                            'isProxy' => $user->id,
+                        ];
+                        event(new MyEvent($data));
+                    } else
+                        $this->placeBid($product_id, $product, $user, $request->amount);
+                }
             }
-            $record->save();
         }
-         else {
-            // proxyBidding == 'off'
-            $record = ProxyBid::where('product_id', $product_id)->first();
-            if ($record) {
-                // proxyBidding exist
-                //bid
+
+
+
+
+
+
+        // normal bidding 
+        else {
+            // previous proxy
+            $previous = ProxyBid::where('product_id', $product_id)->first(); 
+            if ($previous) {
+                if ($request->amount < $previous->amount) {
+                    // Bid($request->amount);
+                    $this->placeBid($product_id, $product, $user, $request->amount);
+                    if ($user->id != $previous->user_id) {
+                        $previous_user = User::where('id', $previous->user_id)->first();
+                        if ($previous->amount > $request->amount + 10) {
+                            // Bid($request->amount + 10);
+                            $this->placeBid($product_id, $product, $previous_user, $request->amount + 10, $previous_user->id);
+                        } else {
+                            // Delete($previous);
+                            $previous->delete();
+                            // Bid($previous->amount);
+                            $this->placeBid($product_id, $product, $previous_user, $previous->amount);
+                        }
+                    } else {
+                        $data = [
+                            'isProxy' => $user->id,
+                        ];
+                        event(new MyEvent($data));
+                    }
+                } else {
+                    // Delete($previous);
+                    $previous->delete();
+
+                    if ($user->id != $previous->user_id) {
+                        // Bid($previous->amount);
+                        $previous_user = User::where('id', $previous->user_id)->first();
+                        $this->placeBid($product_id, $product, $previous_user, $previous->amount);
+                    }
+                    $this->placeBid($product_id, $product, $user, $request->amount);
+                }
             } else {
-                // proxy doesn't exist
-                // general bid
+                // normal bidding without proxy bidding
+                // Bid($request->amount);
+                $this->placeBid($product_id, $product, $user, $request->amount);
             }
-            
         }
 
+        $notify[] = ['success', "Successfully bid on the product!"];
+        return $notify;
+    }
+
+    public function storeProxyBid($product_id, $user_id, $amount) {
+        $proxy = new ProxyBid();
+        $proxy->product_id = $product_id;
+        $proxy->user_id = $user_id;
+        $proxy->amount = $amount;
+        $proxy->save();
+    }
+
+
+    public function placeBid($product_id, $product, $user, $amount, $isProxy = 0) {
         //Bid
         $bid = new Bid();
         $bid->product_id = $product_id;
         $bid->user_id = $user->id;
-        $bid->bid_amount = $request->amount;
+        $bid->bid_amount = $amount;
         $bid->shipping_cost = $product->shipping_cost;
-        $bid->total_amount = ($request->amount + $product->shipping_cost);
+        $bid->total_amount = ($amount + $product->shipping_cost);
         $bid->save();
-
-        //Transaction
-
-        // $transaction = new Transaction();
-        // $transaction->user_id = $user->id;
-        // $transaction->amount = getAmount($total_payable);
-        // $transaction->post_balance = getAmount($user->balance);
-        // $transaction->trx_type = '-';
-        // $transaction->details = 'Bid to ' . $product->name;
-        // $transaction->trx = getTrx();
-        // $transaction->save();
-
+        
         //Admin Notification
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = $user->id;
@@ -109,13 +205,11 @@ class BidController extends Controller
 
         $data = [
             'bidder' => $bid->user->firstname . ' '. $bid->user->lastname,
-            'amount' =>  $bid->bid_amount,
+            'amount' =>  intval($bid->bid_amount),
+            'isProxy' => $isProxy,
         ];
 
         event(new MyEvent($data));
-
-        $notify[] = ['success', "Successfully bid on the product!"];
-        return $notify;
     }
 
     //User bids list

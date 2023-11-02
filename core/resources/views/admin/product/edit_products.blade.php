@@ -11,8 +11,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">@lang('Product Name')</label>
-                                    <input type="text" id="name" name="name" placeholder="Name" class="form-control"
-                                           value="{{ $product->name }}">
+                                    <input type="text" id="name" name="name" placeholder="Name"
+                                        class="form-control" value="{{ $product->name }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -21,7 +21,9 @@
                                     <select class="form-control" id="category" name="category_id" required="">
                                         <option value="">-- @lang('Select One') --</option>
                                         @forelse($categories as $item)
-                                            <option value="{{ $item->id }}" {{ $product->category_id == $item->id ? 'selected' : null }}>{{ __(@$item->name) }}</option>
+                                            <option value="{{ $item->id }}"
+                                                {{ $product->category_id == $item->id ? 'selected' : null }}>
+                                                {{ __(@$item->name) }}</option>
                                         @empty
                                         @endforelse
                                     </select>
@@ -31,38 +33,43 @@
                                 <div class="form-group">
                                     <label for="start_date">@lang('Start Date')</label>
                                     <input type="text" id="start_date" class="form-control timepicker"
-                                           placeholder="@lang('Date')" value="{{ \Carbon\Carbon::parse($product->start_date)->format('Y-m-d h:i a') }}"
-                                           autocomplete="off" name="start_date" required="">
+                                        placeholder="@lang('Date')"
+                                        value="{{ \Carbon\Carbon::parse($product->start_date)->format('Y-m-d h:i a') }}"
+                                        autocomplete="off" name="start_date" required="">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>@lang('End Date')</label>
                                     <input type="text" class="form-control timepicker" placeholder="@lang('Date')"
-                                           value="{{ \Carbon\Carbon::parse($product->end_date)->format('Y-m-d h:i a') }}"
-                                           autocomplete="off" name="end_date" required="">
+                                        value="{{ \Carbon\Carbon::parse($product->end_date)->format('Y-m-d h:i a') }}"
+                                        autocomplete="off" name="end_date" required="">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>@lang('Minimum Bid Price')</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="@lang('Price')"
-                                               name="min_bid_price"
-                                               value="{{ getAmount($product->min_bid_price) }}" required>
+                                            name="min_bid_price" value="{{ getAmount($product->min_bid_price) }}" required>
                                         <div class="input-group-append">
                                             <div class="input-group-text">{{ $general->cur_text }}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>@lang('Stock')</label>
+                                    <input type="number" class="form-control" name="stock" value="{{ $product->stock }}" min="1" required>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>@lang('Shipping Cost')</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="@lang('Shipping')"
-                                               name="shipping_cost"
-                                               value="{{ getAmount($product->shipping_cost) }}" required>
+                                            name="shipping_cost" value="{{ getAmount($product->shipping_cost) }}" required>
                                         <div class="input-group-append">
                                             <div class="input-group-text">{{ $general->cur_text }}</div>
                                         </div>
@@ -73,7 +80,7 @@
                                 <div class="form-group">
                                     <label>@lang('Delivery Time')</label>
                                     <input type="text" class="form-control" name="delivery_time"
-                                           value="{{ $product->delivery_time }}" required>
+                                        value="{{ $product->delivery_time }}" required>
                                 </div>
                             </div>
                             <div class="col-md-9">
@@ -83,19 +90,50 @@
                                         or <code>enter</code> key</small>
                                     <!-- Multiple select-2 with tokenize -->
                                     <select class="select2-auto-tokenize" name="keywords[]" multiple="multiple">
-                                        @if($product->keywords)
-                                            @foreach($product->keywords as $item)
+                                        @if ($product->keywords)
+                                            @foreach ($product->keywords as $item)
                                                 <option value="{{ $item }}" selected>{{ $item }}</option>
                                             @endforeach
                                         @endif
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
+                            <div class="col-md-12" style="display: flex; flex-direction: row-reverse;">
+
+
+                                <div class="col-md-2 imageItem"
+                                    style="width: 20%; max-width: 20%; flex: 1; align-self: center;">
+                                    <div class="payment-method-item">
+                                        <div class="payment-method-header d-flex flex-wrap">
+                                            <div class="thumb" style="position: relative; width: 100%; margin-bottom: 0;">
+                                                <div class="avatar-preview">
+                                                    <div class="profilePicPreview">
+                                                        @if ($product->pdf)
+                                                            <iframe id="pdfPreview"
+                                                                src="{{ asset('assets/pdf/' . $product->pdf) }}"
+                                                                style="width: 100%; height: 100%; border: none;"></iframe>
+                                                        @else
+                                                            <img id="imagePreview"
+                                                                src="{{ asset('assets/images/document.png') }}"
+                                                                style="width: 100%; height: 100%; object-fit: cover;">
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="avatar-edit">
+                                                    <input type="file" name="pdf" class="profilePicUpload"
+                                                        id="pdf_selection" accept=".pdf" onchange="previewFile()" />
+                                                    <label for="pdf_selection" class="bg-primary"><i
+                                                            class="la la-pencil"></i></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group form-edit-custom" style="width: 80%; margin-right: auto;">
                                     <label for="nicEditor0">@lang('Description')</label>
-                                    <textarea rows="10" name="description" class="form-control nicEdit"
-                                              id="nicEditor0">{{ $product->description }}</textarea>
+                                    <textarea rows="10" name="description" class="form-control nicEdit" id="nicEditor0">{{ $product['description'] }}</textarea>
                                 </div>
                             </div>
 
@@ -120,13 +158,17 @@
                                                             <div class="thumb" style="position: relative;">
                                                                 <div class="avatar-preview">
                                                                     <div class="profilePicPreview"
-                                                                         style="background-image: url('{{ getImage(imagePath()["products"]["path"] . "/" . $image) }}')">
+                                                                        style="background-image: url('{{ getImage(imagePath()['products']['path'] . '/' . $image) }}')">
 
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="avatar-remove">
-                                                                    <button class="bg-danger deleteOldImage" onclick="return false" data-removeindex="imageItem{{ $loop->iteration }}" data-deletelink="{{ route('admin.products.image.delete', [$product->id, $image]) }}"><i class="la la-close"></i></button>
+                                                                    <button class="bg-danger deleteOldImage"
+                                                                        onclick="return false"
+                                                                        data-removeindex="imageItem{{ $loop->iteration }}"
+                                                                        data-deletelink="{{ route('admin.products.image.delete', [$product->id, $image]) }}"><i
+                                                                            class="la la-close"></i></button>
                                                                 </div>
 
                                                             </div>
@@ -145,7 +187,7 @@
                                 <div class="card border--dark">
                                     <h5 class="card-header bg--dark">@lang('Other Information')
                                         <button type="button"
-                                                class="btn btn-sm btn-outline-light float-right addNewInformation">
+                                            class="btn btn-sm btn-outline-light float-right addNewInformation">
                                             <i class="la la-fw la-plus"></i>@lang('Add New')
                                         </button>
                                     </h5>
@@ -158,14 +200,20 @@
                                                     <div class="form-group">
                                                         <div class="input-group mb-md-0 mb-4">
                                                             <div class="col-md-4">
-                                                                <input name="title[]" value="{{ $key }}" class="form-control" type="text" required placeholder="@lang('Title')">
+                                                                <input name="title[]" value="{{ $key }}"
+                                                                    class="form-control" type="text" required
+                                                                    placeholder="@lang('Title')">
                                                             </div>
                                                             <div class="col-md-6 mt-md-0 mt-2">
-                                                                <input name="content[]" value="{{ $info }}" class="form-control" type="text" required placeholder="@lang('Content')">
+                                                                <input name="content[]" value="{{ $info }}"
+                                                                    class="form-control" type="text" required
+                                                                    placeholder="@lang('Content')">
                                                             </div>
                                                             <div class="col-md-2 mt-md-0 mt-2 text-right">
                                                                 <span class="input-group-btn">
-                                                                    <button class="btn btn--danger btn-lg removeInfoBtn w-100" type="button">
+                                                                    <button
+                                                                        class="btn btn--danger btn-lg removeInfoBtn w-100"
+                                                                        type="button">
                                                                         <i class="fa fa-times"></i>
                                                                     </button>
                                                                 </span>
@@ -200,8 +248,8 @@
 @endpush
 
 @push('script-lib')
-    <script src="{{asset('assets/admin/js/vendor/datepicker.min.js')}}"></script>
-    <script src="{{asset('assets/admin/js/vendor/datepicker.en.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/vendor/datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/vendor/datepicker.en.js') }}"></script>
 @endpush
 @push('style')
     <style>
@@ -231,28 +279,58 @@
             cursor: pointer;
             padding-left: 6px;
         }
+
+        .form-edit-custom>div {
+            width: 100% !important;
+        }
     </style>
 @endpush
 
 @push('script')
     <script>
-        (function ($) {
+        function previewFile() {
+            var fileInput = document.getElementById("pdf_selection");
+            var pdfPreview = document.getElementById("pdfPreview");
+            var imagePreview = document.getElementById("imagePreview");
+            var file = fileInput.files[0];
+
+            if (file) {
+                if (file.type === "application/pdf") {
+                    // Display PDF
+                    pdfPreview.style.display = "block";
+                    pdfPreview.src = URL.createObjectURL(file);
+                    imagePreview.style.display = "none";
+                } else if (file.type.startsWith("image/")) {
+                    // Display image
+                    imagePreview.style.display = "block";
+                    imagePreview.src = URL.createObjectURL(file);
+                    pdfPreview.style.display = "none";
+                } else {
+                    // Unsupported file type
+                    alert("Unsupported file type. Please select a PDF or image.");
+                    pdfPreview.style.display = "none";
+                    imagePreview.style.display = "none";
+                }
+            }
+        }
+
+        (function($) {
             "use strict";
 
             //Delete Old Image
-            $('.deleteOldImage').on('click', function () {
+            $('.deleteOldImage').on('click', function() {
                 var url = $(this).data('deletelink');
-                var removeindex =  $(this).data('removeindex');
+                var removeindex = $(this).data('removeindex');
 
                 $.ajax({
                     type: "GET",
                     url: url,
-                    success: function (data) {
-                        if (data.success){
+                    success: function(data) {
+                        if (data.success) {
                             $('#' + removeindex).remove();
                             notify('success', data.message);
-                        }else{
-                            notify('error','Failed to delete the image!')
+                        } else {
+                            notify('error', 'Failed to delete the image!')
                         }
                     }
                 });
@@ -286,7 +364,7 @@
                 startDate: start,
                 minHours: startHours,
                 maxHours: 24,
-                onSelect: function (fd, d, picker) {
+                onSelect: function(fd, d, picker) {
                     // Do nothing if selection was cleared
                     if (!d) return;
 
@@ -313,9 +391,9 @@
             });
 
             var counter = 0;
-            $('.addBtn').click(function () {
+            $('.addBtn').click(function() {
                 counter++;
-                $('.element').append(`<div class="col-md-2 imageItem"><div class="payment-method-item"><div class="payment-method-header d-flex flex-wrap"><div class="thumb" style="position: relative;"><div class="avatar-preview"><div class="profilePicPreview" style="background-image: url('{{asset('assets/images/default.png')}}')"></div></div><div class="avatar-edit"><input type="file" name="images[]" class="profilePicUpload" required id="image${counter}" accept=".png, .jpg, .jpeg" /><label for="image${counter}" class="bg-primary"><i class="la la-pencil"></i></label></div>
+                $('.element').append(`<div class="col-md-2 imageItem"><div class="payment-method-item"><div class="payment-method-header d-flex flex-wrap"><div class="thumb" style="position: relative;"><div class="avatar-preview"><div class="profilePicPreview" style="background-image: url('{{ asset('assets/images/default.png') }}')"></div></div><div class="avatar-edit"><input type="file" name="images[]" class="profilePicUpload" required id="image${counter}" accept=".png, .jpg, .jpeg" /><label for="image${counter}" class="bg-primary"><i class="la la-pencil"></i></label></div>
                 <div class="avatar-remove">
                     <label class="bg-danger removeBtn">
                         <i class="la la-close"></i>
@@ -327,7 +405,7 @@
             });
 
             function remove() {
-                $('.removeBtn').on('click', function () {
+                $('.removeBtn').on('click', function() {
                     $(this).parents('.imageItem').remove();
                 });
             }
@@ -336,7 +414,7 @@
                 function proPicURL(input) {
                     if (input.files && input.files[0]) {
                         var reader = new FileReader();
-                        reader.onload = function (e) {
+                        reader.onload = function(e) {
                             var preview = $(input).parents('.thumb').find('.profilePicPreview');
                             $(preview).css('background-image', 'url(' + e.target.result + ')');
                             $(preview).addClass('has-image');
@@ -347,13 +425,13 @@
                     }
                 }
 
-                $(".profilePicUpload").on('change', function () {
+                $(".profilePicUpload").on('change', function() {
                     proPicURL(this);
                 });
             }
 
             //----- Add Information fields-------//
-            $('.addNewInformation').on('click', function () {
+            $('.addNewInformation').on('click', function() {
                 var html = `
                 <div class="col-md-12 other-info-data">
                     <div class="form-group">
@@ -378,7 +456,7 @@
                 $('.addedField').append(html);
             });
 
-            $(document).on('click', '.removeInfoBtn', function () {
+            $(document).on('click', '.removeInfoBtn', function() {
                 $(this).closest('.other-info-data').remove();
             });
 

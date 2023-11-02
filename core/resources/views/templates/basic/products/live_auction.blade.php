@@ -2,8 +2,8 @@
 
 @section('content')
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                Live Auction Block
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                    Live Auction Block
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class="live-auction-block bg-white-smoke pd-t-80 pd-b-80">
         <div class="container ml-b-30">
             <div class="row items-two-1199 justify-content-center">
@@ -52,7 +52,8 @@
                                 </div>
                                 <div class="bid-button">
                                     @auth
-                                        <a href="javascript:void(0)" class="btn btn-default bidBtn" data-toggle="tooltip"
+                                        <a href="{{ route('auction.details', [$item->id, slug($item->name)]) }}"
+                                            class="btn btn-default" data-toggle="tooltip"
                                             data-url="{{ route('user.bid', [$item->id, slug($item->name)]) }}"
                                             data-min_bid_amount="{{ count($item->bids) > 0 ? 'Your bid should be greater than highest bid ' . getAmount($item->bids->max('bid_amount')) . $general->cur_text : 'Bid First! Minimum bid price ' . getAmount($item->min_bid_price) . $general->cur_text }}"
                                             data-shipping_cost="{{ getAmount($item->shipping_cost) }}"
@@ -150,6 +151,30 @@
 
 @push('script')
     <script>
+        var serverTimeStr = document.querySelector('#serverTime').innerHTML;
+        var serverTime = new Date(serverTimeStr);
+
+        var clientTime = new Date();
+        var timeGap = clientTime - serverTime;
+
+        $('.bid-timer').map(function() {
+            // Your code to operate on each element goes here
+            const selector = this;
+            const dateString = new Date($(selector).text());
+            const endDate = new Date(dateString.getTime() + timeGap);
+            let myCountDown = new ysCountDown(endDate, function(remaining, finished) {
+                let message = "";
+                if (finished) {
+                    message = "Expired";
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        // let endDate = (new Date().getFullYear()) + '/' + (new Date().getMonth() + 1) + '/' + (new Date().getDate() + 1); // comment in this 2
+
         (function($) {
             "use strict";
 

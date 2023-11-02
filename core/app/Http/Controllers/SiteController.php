@@ -12,6 +12,7 @@ use App\Models\SupportMessage;
 use App\Models\SupportTicket;
 use App\Models\Winner;
 use App\Models\Transaction;
+use App\Models\ProxyBid;
 
 use App\Events\MyEvent;
 use Carbon\Carbon;
@@ -223,9 +224,9 @@ class SiteController extends Controller
         if ($serverTime > $product->end_date) {
             $product->winner_id = $product->bids->last()->user_id;
 
-            if($product->bids->count()) {
+            if($product->bids->count() && !$product->bid_complete) {
                 $product->bid_complete = 1;
-                
+                $product->stock = $product->stock - 1;
                 //save in winnder table
                 $existingWinner = Winner::where('bid_id', $product->bids->last()->id)->first();
                 if (!$existingWinner) {
@@ -234,6 +235,10 @@ class SiteController extends Controller
                     $winner->user_id = $product->bids->last()->user_id;
                     $winner->shipping_status = 0;
                     $winner->save();
+
+                    $proxy = ProxyBid::where('product_id', $product_id)->first();
+                    if ($proxy)
+                        $proxy->delete(); 
 
                     //save transaction table
                     $transaction = new Transaction();
@@ -245,7 +250,7 @@ class SiteController extends Controller
                     $transaction->trx = getTrx();
                     $transaction->save();
                 }
-
+                $product->save();
             }
         }
         if ($product->bid_complete == 1) {
@@ -254,8 +259,14 @@ class SiteController extends Controller
         }
 
         $page_title = 'Auction Details';
-
-        return view($this->activeTemplate.'products.auctionDetails',compact('product','page_title'));
+        $proxyBidder = ProxyBid::where('product_id', $product_id)->first();
+        
+        if($proxyBidder)
+            $isProxy = $proxyBidder->user_id == auth()->id() ? 1 : 0;
+        else
+            $isProxy = 0;
+        
+        return view($this->activeTemplate.'products.auctionDetails',compact('product', 'page_title', 'isProxy'));
     }
 
     // Category Products

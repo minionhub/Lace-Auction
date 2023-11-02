@@ -381,6 +381,8 @@ Route::get('auction-details/{id}/{slug}', 'SiteController@auctionDetails')->name
 Route::get('search', 'SiteController@searchProduct')->name('product.search');
 
 Route::get('live-auction', 'SiteController@liveAuction')->name('liveAuction');
+
+Route::get('live-auction', 'SiteController@liveAuction')->name('liveAuction');
 Route::get('closed-auction', 'SiteController@closedAuction')->name('closedAuction');
 
 Route::get('/cookie/accept', 'SiteController@cookieAccept')->name('cookie.accept');

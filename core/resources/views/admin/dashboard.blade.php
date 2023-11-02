@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-{{-- @section('panel')
+@section('panel')
     @if(@json_decode($general->sys_version)->version > systemDetails()['version'])
         <div class="row">
             <div class="col-md-12">
@@ -717,4 +717,4 @@
             iziToast.success({message: "Copied: " + copyText.value, position: "topRight"});
         });
     </script>
-@endpush --}}
+@endpush

@@ -66,12 +66,14 @@ class ProductController extends Controller
             'start_date' => 'required|date_format:"Y-m-d h:i a"|after_or_equal:today',
             'end_date' => 'required|date_format:"Y-m-d h:i a"|after:start_date',
             'min_bid_price' => 'required|numeric|gt:0',
+            'stock' => 'required|numeric|min:1',
             'shipping_cost' => 'required|numeric|min:0',
             'delivery_time' => 'required|string',
             'description' => 'required|string',
             'keywords.*' => 'required|string',
             'title.*' => 'required|string',
             'content.*' => 'required|string',
+            'pdf.*' => 'required', 'max:10000', new FileTypeValidate('pdf'),
             'images.*' => ['required', 'max:10000', new FileTypeValidate(['jpeg','jpg','png','gif'])]
         ]);
 
@@ -81,6 +83,7 @@ class ProductController extends Controller
         $product->start_date = Carbon::create($request->start_date);
         $product->end_date = Carbon::create($request->end_date);
         $product->min_bid_price = $request->min_bid_price;
+        $product->stock = $request->stock;
         $product->shipping_cost = $request->shipping_cost;
         $product->delivery_time = $request->delivery_time;
         $product->keywords = $request->keywords;
@@ -93,6 +96,13 @@ class ProductController extends Controller
             $others_info[$item] = $request->content[$key];
         }
         $product->others_info = $others_info;
+
+        // Upload pdf
+        if ($request->pdf) {
+            $pdf_path = imagePath()['pdf']['path'];
+            $product->pdf = uploadImage($request->pdf, $pdf_path, 'pdf');
+        }
+
         // Upload image
         foreach ($request->images as $image) {
             $path = imagePath()['products']['path'];
@@ -126,12 +136,14 @@ class ProductController extends Controller
             'start_date' => 'required|date_format:"Y-m-d h:i a"|before:end_date',
             'end_date' => 'required|date_format:"Y-m-d h:i a"|after:start_date',
             'min_bid_price' => 'required|numeric|gt:0',
+            'stock' => 'required|numeric|min:1',
             'shipping_cost' => 'required|numeric|min:0',
             'delivery_time' => 'required|string',
             'description' => 'required|string',
             'keywords.*' => 'required|string',
             'title.*' => 'required|string',
             'content.*' => 'required|string',
+            'pdf.*' => 'required', 'max:10000', new FileTypeValidate('pdf'),
             'images.*' => ['required', 'max:10000', new FileTypeValidate(['jpeg','jpg','png','gif'])]
         ]);
 
@@ -141,10 +153,12 @@ class ProductController extends Controller
         $product->start_date = Carbon::create($request->start_date);
         $product->end_date = Carbon::create($request->end_date);
         $product->min_bid_price = $request->min_bid_price;
+        $product->stock = $request->stock;
         $product->shipping_cost = $request->shipping_cost;
         $product->delivery_time = $request->delivery_time;
         $product->keywords = $request->keywords;
         $product->description = $request->description;
+        $product->bid_complete = $request->bid_complete;
         if (!$request->title) {
             $notify[] = ['error', 'Have to put minimum 1 other information'];
             return back()->withNotify($notify);
@@ -153,6 +167,12 @@ class ProductController extends Controller
             $others_info[$item] = $request->content[$key];
         }
         $product->others_info = $others_info;
+
+        // Upload pdf
+        if ($request->pdf) {
+            $pdf_path = imagePath()['pdf']['path'];
+            $product->pdf = uploadImage($request->pdf, $pdf_path, 'pdf');
+        }
 
         // Upload and Update image
         if ($request->images){
@@ -166,7 +186,6 @@ class ProductController extends Controller
         }
 
         $product->save();
-
         $notify[] = ['success', 'Product Updated Successfully!'];
         return back()->withNotify($notify);
     }

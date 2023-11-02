@@ -2,8 +2,8 @@
 
 @section('content')
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                                                                                                        Start Product Details Block
-                                                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                                                                                                                                                    Start Product Details Block
+                                                                                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <div class="product-details-block ptb-120">
         <div class="container">
@@ -34,10 +34,19 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="auction-item-details md-mrt-55">
-                        <h3 class="heading">{{ __(@$product->name) }}</h3>
+                        <div style="display: flex;">
+                            <h3 class="heading">{{ __(@$product->name) }}</h3>
+                            {{-- @if ($isProxy)
+                                <img src="{{ asset('assets/images/proxy.gif') }}" alt="proxy bidding" style="{{ $isProxy?"display: none;" }} width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;">
+                            @endif --}}
+                            <p id="user_id" style="display: none;">{{ auth()->id() }}</p>
+                            <img id="is_proxy" src="{{ asset('assets/images/proxy.gif') }}" alt="proxy bidding"
+                                style="{{ $isProxy ? '' : 'display: none;' }} width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;">
+                        </div>
                         <div class="item-bid-price-time">
-                            <div class="bid-price">{{ $general->cur_sym }}{{ getAmount(@$product->min_bid_price) }}</div>
-
+                            <div class="bid-price">
+                                {{ $general->cur_sym }}{{ getAmount(optional($product->bids->last())->bid_amount ?? $product->min_bid_price) }}
+                            </div>
                             @if (now()->between(
                                     \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $product->start_date)->toDateTimeString(),
                                     \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $product->end_date)->toDateTimeString()))
@@ -76,10 +85,10 @@
                             @else
                                 <div class="bid-timer-area">
                                     <div class="bid-timer">{{ $product->winner->bid->fullname }}</div>
-                                    @if ($product->winner->bid->bid_amount)
+                                    {{-- @if ($product->winner->bid->bid_amount)
                                         <p>@lang('Bid Amount') {{ $general->cur_sym }}
                                             {{ getAmount($product->winner->bid->bid_amount) }}</p>
-                                    @endif
+                                    @endif --}}
                                 </div>
                                 <div class="bid-button">
                                     <div class="text-danger h4 font-weight-bold">@lang('Closed')</div>
@@ -107,6 +116,12 @@
                                     data-animate="hg-fadeInUp">
                                     <ul class="item-info">
                                         <li>@lang('Category') : <span>{{ $product->category->name }}</span></li>
+                                        <li>@lang('Min Price') :
+                                            <span>{{ $general->cur_sym }}{{ getAmount(@$product->min_bid_price) }}</span>
+                                        </li>
+                                        <li>@lang('Stock') :
+                                            <span>{{ getAmount(@$product->stock) }}</span>
+                                        </li>
                                         <li>@lang('Shipping Cost') :
                                             <span>{{ $general->cur_sym }}{{ getAmount(@$product->shipping_cost) }}</span>
                                         </li>
@@ -159,7 +174,40 @@
                             <h2 class="section-heading">@lang('Product Overview')</h2>
                         </div>
                         <div class="product-des-info">
-                            <p>@php echo @$product->description @endphp</p>
+                            <div style="display: flex;">
+                                <p style="width: 80%;">@php echo @$product->description @endphp</p>
+
+                                <div class="col-md-2 imageItem"
+                                    style="width: 20%; max-width: 20%; flex: 1; align-self: flex-start;">
+                                    <div class="payment-method-item">
+                                        <div class="payment-method-header d-flex flex-wrap">
+                                            <div class="thumb" style="position: relative; width: 100%; margin-bottom: 0;">
+                                                <div class="avatar-preview">
+                                                    <div class="profilePicPreview">
+                                                        @if ($product->pdf)
+                                                            <a id="downloadLink"
+                                                                href="{{ asset('assets/pdf/' . $product->pdf) }}"
+                                                                download="{{ $product->pdf }}">
+                                                                <iframe id="pdfPreview"
+                                                                    src="{{ asset('assets/pdf/' . $product->pdf) }}"
+                                                                    style="width: 100%; height: 100%; border: none;"></iframe>
+                                                            </a>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                @if ($product->pdf)
+                                                    <div class="avatar-edit">
+                                                        <input type="button" name="pdf" class="profilePicUpload"
+                                                            id="pdf_selection" onchange="" onclick="downloadPdf()" />
+                                                        <label for="pdf_selection" class="bg-primary"><i
+                                                                class="la la-download" style="color:#fff;"></i></label>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive product-info-table" data-animate="hg-fadeInUp">
                                 <table class="table">
                                     <tbody>
@@ -250,11 +298,46 @@
     </div>
 @endsection
 
+@push('style')
+    <style>
+        .avatar-edit {
+            position: absolute;
+            bottom: -15px;
+            right: 0;
+        }
+
+        .avatar-edit label {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 45px;
+            border: 2px solid #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .profilePicUpload {
+            font-size: 0;
+            opacity: 0;
+            width: 0;
+        }
+
+        .form-edit-custom>div {
+            width: 100% !important;
+        }
+    </style>
+@endpush
 
 @push('script')
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <script>
+        function downloadPdf() {
+            // Simulate a click on the anchor tag
+            document.getElementById('downloadLink').click();
+        }
+
         $(document).ready(function() {
             $('#bidButton').click(function(e) {
                 e.preventDefault();
@@ -293,7 +376,6 @@
                         },
                         success: function(response) {
                             // Handle the response here
-                            console.log(response[0][1]);
                             iziToast.success({
                                 message: response[0][1],
                                 timeout: 3000, // Timeout in milliseconds
@@ -348,7 +430,9 @@
                     let message = "";
                     if (finished) {
                         message = "Expired";
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
                     } else {
                         var re_hours = (remaining.totalDays * 24) + remaining.hours;
                         message += re_hours + " : ";
@@ -384,33 +468,50 @@
         var channel = pusher.subscribe('my-channel');
 
         channel.bind('my-event', function(data) {
+            if (data.message.bidder) {
+                var dateString = data.message.bidtime;
+                var isProxy = data.message.isProxy;
 
-            var dateString = data.message.bidtime;
-
-            var date = new Date();
+                var date = new Date();
 
 
-            var options = {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-            };
+                var options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                };
 
-            var formattedDate = date.toLocaleDateString('en-US', options);
+                var formattedDate = date.toLocaleDateString('en-US', options);
 
-            var appendElement = "<tr><td class='history-price bid_amount'> $" + data.message.amount +
-                "</td><td class='history-time bid_time'>" + formattedDate +
-                "</td><td class='history-user bid_user'>" + data.message.bidder + "</td></tr>";
-            appendElement += document.getElementsByTagName('tbody')[0].innerHTML;
-            document.getElementsByTagName('tbody')[0].innerHTML = appendElement;
+                var appendElement = "<tr><td class='history-price bid_amount'> $" + data.message.amount +
+                    "</td><td class='history-time bid_time'>" + formattedDate +
+                    "</td><td class='history-user bid_user'>" + data.message.bidder + "</td></tr>";
+                appendElement += document.getElementsByTagName('tbody')[0].innerHTML;
+                document.getElementsByTagName('tbody')[0].innerHTML = appendElement;
 
-            document.querySelector('.min_bid_amount').innerHTML = 'Your bid should be greater than highest bid ' +
-                data.message.amount + 'USD';
-            document.querySelector('.total_payable').innerHTML = '';
-            //    }
+                document.querySelector('.min_bid_amount').innerHTML =
+                    'Your bid should be greater than highest bid ' +
+                    data.message.amount + 'USD';
+                document.querySelector('.total_payable').innerHTML = '';
+
+                if (document.querySelector('#user_id').innerHTML == isProxy)
+                    document.querySelector('#is_proxy').style =
+                    "display: block; width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;";
+                else
+                    document.querySelector('#is_proxy').style =
+                    "display: none; width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;";
+            } else {
+                var isProxy = data.message.isProxy;
+                if (document.querySelector('#user_id').innerHTML == isProxy)
+                    document.querySelector('#is_proxy').style =
+                    "display: block; width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;";
+                else
+                    document.querySelector('#is_proxy').style =
+                    "display: none; width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;";
+            }
         });
     </script>
 @endpush
