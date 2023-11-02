@@ -3,23 +3,22 @@
     <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
     <div class="sidebar__inner">
         <div class="sidebar__logo">
-        {{-- <img
-                    src="{{getImage(imagePath()['logoIcon']['path'] .'/logo.png')}}" alt="@lang('image')"> --}}
-            <a href="{{route('admin.dashboard')}}" class="sidebar__main-logo"><img
+        <img src="{{getImage(imagePath()['logoIcon']['path'] .'/logo.png')}}" alt="@lang('image')">
+            {{-- <a href="{{route('admin.dashboard')}}" class="sidebar__main-logo"><img
                     src="{{getImage(imagePath()['logoIcon']['path'] .'/logo.png')}}" alt="@lang('image')"></a>
             <a href="{{route('admin.dashboard')}}" class="sidebar__logo-shape"><img
                     src="{{getImage(imagePath()['logoIcon']['path'] .'/favicon.png')}}" alt="@lang('image')"></a>
-            <button type="button" class="navbar__expand"></button>
+            <button type="button" class="navbar__expand"></button> --}}
         </div>
 
         <div class="sidebar__menu-wrapper" id="sidebar__menuWrapper">
             <ul class="sidebar__menu">
-                <li class="sidebar-menu-item {{menuActive('admin.dashboard')}}">
+                {{-- <li class="sidebar-menu-item {{menuActive('admin.dashboard')}}">
                     <a href="{{route('admin.dashboard')}}" class="nav-link ">
                         <i class="menu-icon las la-home"></i>
                         <span class="menu-title">@lang('Dashboard')</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="sidebar-menu-item {{menuActive('admin.category*')}}">
                     <a href="{{route('admin.category.index')}}" class="nav-link ">
@@ -72,15 +71,15 @@
                 </li>
 
 {{--                Bids--}}
-                <li class="sidebar-menu-item {{menuActive('admin.bids.list')}}">
+                {{-- <li class="sidebar-menu-item {{menuActive('admin.bids.list')}}">
                     <a href="{{route('admin.bids.list')}}" class="nav-link ">
                         <i class="menu-icon las la-bold"></i>
                         <span class="menu-title">@lang('Bids')</span>
                     </a>
-                </li>
+                </li> --}}
 
 {{--                Winners & Items--}}
-                <li class="sidebar-menu-item sidebar-dropdown">
+                {{-- <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.winners*',3)}}">
                         <i class="menu-icon la la-trophy"></i>
                         <span class="menu-title">@lang('Winners & Items')</span>
@@ -114,7 +113,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
 {{--                Users--}}
                 <li class="sidebar-menu-item sidebar-dropdown">
@@ -177,19 +176,19 @@
                             </li>
 
 
-                            <li class="sidebar-menu-item {{menuActive('admin.users.email.all')}}">
+                            {{-- <li class="sidebar-menu-item {{menuActive('admin.users.email.all')}}">
                                 <a href="{{route('admin.users.email.all')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Send Email')</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
                         </ul>
                     </div>
                 </li>
 
 {{--                Payment Gateway--}}
-                <li class="sidebar-menu-item sidebar-dropdown">
+                {{-- <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.gateway*',3)}}">
                         <i class="menu-icon las la-credit-card"></i>
                         <span class="menu-title">@lang('Payment Gateways')</span>
@@ -212,10 +211,10 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
 {{--                Deposit--}}
-                <li class="sidebar-menu-item sidebar-dropdown">
+                {{-- <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.deposit*',3)}}">
                         <i class="menu-icon las la-credit-card"></i>
                         <span class="menu-title">@lang('Deposits')</span>
@@ -431,14 +430,14 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
 
                 {{-- origin blocked <li class="sidebar__menu-header">@lang('TEMPLATES')</li>  origin blocked --}}
 
 
 
-                <li class="sidebar__menu-header">@lang('Frontend Manager')</li>
+                {{-- <li class="sidebar__menu-header">@lang('Frontend Manager')</li>
 
                 <li class="sidebar-menu-item {{menuActive('admin.frontend.templates')}}">
                     <a href="{{route('admin.frontend.templates')}}" class="nav-link ">
@@ -517,7 +516,7 @@
                         <i class="menu-icon las la-bug"></i>
                         <span class="menu-title">@lang('Report & Request') </span>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
 
