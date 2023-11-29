@@ -17,7 +17,7 @@ class ProcessController extends Controller
     {
     	$credentials = json_decode($deposit->gateway_currency()->gateway_parameter);
     	$environment = new SandboxEnvironment($credentials->clientId, $credentials->clientSecret);
-		$client = new PayPalHttpClient($environment);
+        $client = new PayPalHttpClient($environment);
     	dd($client);
     }
 }

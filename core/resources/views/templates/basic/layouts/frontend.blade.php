@@ -150,7 +150,7 @@
 
                                             <li><a href="{{ route('liveAuction') }}">@lang('Live Auction')</a></li>
                                             {{-- <li><a href="{{ route('blog') }}">@lang('Blog')</a></li> --}}
-                                            {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
+                                            <li><a href="{{ route('contact') }}">@lang('Contact')</a></li>
 
                                             <li class="dropdown-trigger">
                                                 <a href="javascript:void(0)">@lang('Account')</a>
@@ -283,7 +283,7 @@
                                         @empty
                                         @endforelse
 
-                                        {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
+                                        <li><a href="{{ route('contact') }}">@lang('Contact')</a></li>
                                     </ul>
                                 </div>
                             </aside>

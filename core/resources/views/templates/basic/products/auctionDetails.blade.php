@@ -44,7 +44,7 @@
                                 style="{{ $isProxy ? '' : 'display: none;' }} width: 35px !important; height: 35px; margin-left: auto; margin-right: 10px;">
                         </div>
                         <div class="item-bid-price-time">
-                            <div class="bid-price">
+                            <div class="bid-price" id="hightest_bid_price">
                                 {{ $general->cur_sym }}{{ getAmount(optional($product->bids->last())->bid_amount ?? $product->min_bid_price) }}
                             </div>
                             @if (now()->between(
@@ -504,6 +504,7 @@
                     'Your bid should be greater than highest bid ' +
                     data.message.amount + 'USD';
                 document.querySelector('.total_payable').innerHTML = '';
+                document.getElementById('hightest_bid_price').innerHTML = '$' + data.message.amount;
 
                 if (document.querySelector('#user_id').innerHTML == isProxy)
                     document.querySelector('#is_proxy').style =

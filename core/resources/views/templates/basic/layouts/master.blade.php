@@ -144,13 +144,13 @@
                                                     href="{{ route('user.transactions.history') }}">@lang('Transactions')</a>
                                             </li>
 
-                                            {{-- <li class="dropdown-trigger">
+                                            <li class="dropdown-trigger">
                                             <a href="javascript:void(0)">@lang('Ticket')</a>
                                             <ul class="dropdown-content">
                                                 <li><a href="{{ route('ticket.open') }}">@lang('Create New')</a></li>
                                                 <li><a href="{{ route('ticket') }}">@lang('My Ticket')</a></li>
                                             </ul>
-                                        </li> --}}
+                                        </li>
 
                                             <li class="dropdown-trigger">
                                                 <a href="javascript:void(0)">@lang('Account')</a>
@@ -271,7 +271,7 @@
                                         @empty
                                         @endforelse
 
-                                        {{-- <li><a href="{{ route('contact') }}">@lang('Contact')</a></li> --}}
+                                        <li><a href="{{ route('contact') }}">@lang('Contact')</a></li>
                                     </ul>
                                 </div>
                             </aside>

@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="col-lg-4 col-md-6 mb-30">
                     <a class="d-block" href="{{ route('user.deposit') }}" title="@lang('Deposit Now')">
                         <div class="custom-box-shadow rounded mb-4">
