@@ -17,7 +17,7 @@ Route::get('cron', 'CronController@selectWinner')->name('cron');
 
 Route::namespace('Gateway')->prefix('ipn')->name('ipn.')->group(function () {
     Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');
-    Route::get('paypal_sdk', 'paypal_sdk\ProcessController@ipn')->name('paypal_sdk');
+    Route::get('paypal_sdk', 'paypal_sdk_2\ProcessController@ipn')->name('paypal_sdk');
     Route::post('perfect_money', 'perfect_money\ProcessController@ipn')->name('perfect_money');
     Route::post('stripe', 'stripe\ProcessController@ipn')->name('stripe');
     Route::post('stripe_js', 'stripe_js\ProcessController@ipn')->name('stripe_js');
